@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 7307470862071412070}
   - component: {fileID: 7439392713565909559}
   - component: {fileID: -7991651958356542651}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sword_01
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,5 +122,5 @@ MonoBehaviour:
   Type: 0
   Damage: 10
   Cooldown: 2
-  Range: 1
+  Range: 2
   WeaponRange: {x: 0, y: 1, z: 0}

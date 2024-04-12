@@ -3,14 +3,15 @@ using UnityEngine;
 
 public class AttackController : MonoBehaviour
 {
-    [HideInInspector] public WeaponController Weapon;
+    
     [HideInInspector] public bool IsAttacking;
 
     [SerializeField] private LayerMask _attackingMask;
+    [SerializeField][Range(0, 1)] private float _hitReactionTime;
     
     private Collider[] _hits = new Collider[5];
     private Animator _animator;
-
+    private WeaponController _weapon;
 
     private void Start()
     {
@@ -20,33 +21,46 @@ public class AttackController : MonoBehaviour
 
     private void ResetAttack() => IsAttacking = false;
 
-    private void FixedUpdate()
+    public void SetWeapon(WeaponController weapon) => _weapon = weapon;
+
+    public void Attack()
     {
-        if (Input.GetMouseButtonDown(0) && IsAttacking == false)
+        if (IsAttacking == false)
         {
+            float cooldown = 0;
             IsAttacking = true;
             int index = Random.Range(0, 3);
-            if (Weapon.Type == AttackType.melee)
+            if (_weapon.Type == AttackType.melee)
             {
                 _animator.SetInteger("AttackIndex", index);
                 _animator.SetTrigger("MeleeAttack");
+                Invoke("AttackCheck", _hitReactionTime);
+                cooldown = (index == 0) ? _weapon.Cooldown - 1 : _weapon.Cooldown;
             }
-            float cooldown = (index == 0) ? Weapon.Cooldown - 1 : Weapon.Cooldown;
             Invoke("ResetAttack", cooldown);
         }
     }
-    void Attacking()
+    
+    void AttackCheck()
     {
-        int count = Physics.OverlapSphereNonAlloc(transform.position + Weapon.WeaponRange, Weapon.Range, _hits, _attackingMask);
-        
+        int count = Physics.OverlapSphereNonAlloc(transform.position + _weapon.WeaponRange, _weapon.Range, _hits, _attackingMask);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (_hits[i].TryGetComponent<HPController>(out HPController hpController))
+            {
+                hpController.TakeDamage(_weapon.Damage);
+            }
+        }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + transform.forward + Weapon.WeaponRange, Weapon.Range);
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position + transform.forward + Weapon.WeaponRange, 0.2f);
-    }
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position + transform.forward + _weapon.WeaponRange, _weapon.Range);
+
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawSphere(transform.position + transform.forward + _weapon.WeaponRange, 0.2f);
+    //}
 }

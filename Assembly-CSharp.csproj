@@ -60,12 +60,15 @@
     <Analyzer Include="D:\Users\Unity Hub\2022.3.16f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\MyProject\Scripts\EventManager.cs" />
     <Compile Include="Assets\Game Buffs\Free Stylized Textures\Scripts\GameBuffsInitializer.cs" />
     <Compile Include="Assets\MyProject\Scripts\AttackController.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\MyProject\Scripts\EnvironmentController.cs" />
     <Compile Include="Assets\MyProject\Scripts\WeaponController.cs" />
     <Compile Include="Assets\AA_UniversalCharacter\Scripts\CustomButton.cs" />
     <Compile Include="Assets\MyProject\Scripts\HPController.cs" />
+    <Compile Include="Assets\MyProject\Scripts\EnemyController.cs" />
     <Compile Include="Assets\MyProject\UI\Art\FantasyIconsPackFree\Demo\IconViewer.cs" />
     <Compile Include="Assets\MyProject\Scripts\PlayerController.cs" />
     <Compile Include="Assets\AA_UniversalCharacter\Scripts\ModulesShaker.cs" />
