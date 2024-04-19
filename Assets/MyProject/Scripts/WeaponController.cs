@@ -8,7 +8,9 @@ public class WeaponController : MonoBehaviour
     public AttackType Type;
     public float Damage;
     public float Cooldown;
+    public float MeleeCooldown;
     public float Range;
     public Vector3 WeaponRange;
-  
+
+
 }
