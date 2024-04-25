@@ -9,75 +9,73 @@ public interface IMortal
     public void Dying();
 }
 
+public enum DefenseType { CanRoll, CanBlock}
+
 public class PlayerController : MonoBehaviour, IMortal
 {
     public event Action OnPlayerDying;
 
-    [SerializeField] private float _speed = 5;
-    [SerializeField] private float _rotationSpeed = 3;
-    [SerializeField] private float _maxJumpForce = 100;
-    [SerializeField] private Transform _rHand;
-    [SerializeField] private GameObject _swordClone;
     [SerializeField] private Transform[] _vulnerableParts;
 
-    private GameObject _currentWeapon;
     private CharacterController _controller;
+    private HPController _hpController;
     private Animator _animator;
     private AttackController _attackController;
     private float _jumpForce = 0;
-    //private Camera _camera;
-    //private Vector3 _input;
+    private bool _isDead = false;
 
-    private void Start()
+    void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
-        //_camera = Camera.main;
-        _currentWeapon = Instantiate(_swordClone, _rHand);
         _attackController = gameObject.GetComponent<AttackController>();
-        _attackController.SetWeapon(_currentWeapon.GetComponent<WeaponController>());
-
+        _attackController.SetWeapon(StaticData.PlayerRole.Weapon);
+        _hpController = gameObject.GetComponent<HPController>();
+        _hpController.SetStartHealth(StaticData.PlayerRole.MaxHP);
     }
+
 
     void Update()
     {
-        //float horizontal = Input.GetAxis("Horizontal");
-        //float vertical = Input.GetAxis("Vertical");
-
-        //_input = new Vector3(horizontal, 0, vertical);
-
         Movement();
         Attack();
+        Defense();
         Jump();
+    }
+
+    private void Defense()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && StaticData.PlayerRole.Defense == DefenseType.CanBlock)
+        {
+            _hpController.SetBlock();
+        }
+        else if (Input.GetKeyUp(KeyCode.E) && StaticData.PlayerRole.Defense == DefenseType.CanBlock)
+        {
+            _hpController.ResetBlock();
+        }
+        if (Input.GetMouseButton(1) && StaticData.PlayerRole.Defense == DefenseType.CanRoll)
+        {
+            _animator.SetTrigger("RollBack");
+        }
     }
 
     void Movement()
     {
-        //Vector3 moveDirection = _camera.transform.TransformDirection(_input);
-        //moveDirection.y = 0;
-        //moveDirection.Normalize();
-        ////moveDirection += Physics.gravity;
-        //transform.forward = moveDirection;
-        //if (!_attackController.IsAttacking) _controller.Move(_input * _speed * Time.deltaTime);
-        //_animator.SetFloat("Speed", _controller.velocity.magnitude);
-
-
         float vertical = Input.GetAxis("Vertical");
         Vector3 direction = transform.TransformDirection(0, _jumpForce, vertical);
-        if (_controller.enabled)
+        if (!_isDead)
         {
-            if (Input.GetKey(KeyCode.A)) transform.Rotate(Vector3.up, -_rotationSpeed * Time.deltaTime);
-            if (Input.GetKey(KeyCode.D)) transform.Rotate(Vector3.up, _rotationSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.A)) transform.Rotate(Vector3.up, -StaticData.PlayerRole.RotationSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.D)) transform.Rotate(Vector3.up, StaticData.PlayerRole.RotationSpeed * Time.deltaTime);
 
-            _controller.Move(direction * _speed * Time.deltaTime);
+            _controller.Move(direction * StaticData.PlayerRole.Speed * Time.deltaTime);
             _animator.SetFloat("Speed", vertical);
         }
     }
 
     void Attack()
     {
-        if (Input.GetMouseButtonDown(0)) _attackController.Attack(_currentWeapon.GetComponent<WeaponController>().Type);
+        if (Input.GetMouseButtonDown(0) && !_isDead) _attackController.Attack(StaticData.PlayerRole.Weapon.Type);
     }
 
 
@@ -85,7 +83,7 @@ public class PlayerController : MonoBehaviour, IMortal
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _jumpForce = _maxJumpForce;
+            _jumpForce = StaticData.PlayerRole.MaxJumpForce;
             _animator.SetTrigger("Jump");
             Invoke("ReturnDirectionY", 1f);
         }
@@ -101,7 +99,7 @@ public class PlayerController : MonoBehaviour, IMortal
     }
     public void Dying()
     {
-        _controller.enabled = false;
+        _isDead = true;
         OnPlayerDying?.Invoke();
     }
 }

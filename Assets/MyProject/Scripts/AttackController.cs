@@ -1,22 +1,20 @@
 
 using UnityEngine;
 
+public enum AttackType { melee, long_range }
 public class AttackController : MonoBehaviour
 {
-    
     [HideInInspector] public bool IsAttacking;
 
     [SerializeField] private LayerMask _attackingMask;
     [SerializeField] private GameObject _arrowClone;
-    [SerializeField] private GameObject _arrowFXClone;
     [SerializeField] private Transform _arrowPoint;
     [SerializeField] private float _arrowSpawnTime = 1;
     [SerializeField] private float _bowShotForce;
-    [SerializeField][Range(0, 1)] private float _hitReactionTime;
     
     private Collider[] _hits = new Collider[5];
     private Animator _animator;
-    private WeaponController _weapon;
+    private Weapon _weapon;
 
     private void Start()
     {
@@ -26,7 +24,7 @@ public class AttackController : MonoBehaviour
 
     private void ResetAttack() => IsAttacking = false;
 
-    public void SetWeapon(WeaponController weapon) => _weapon = weapon;
+    public void SetWeapon(Weapon weapon) => _weapon = weapon;
 
     public void Attack(AttackType type)
     {
@@ -37,13 +35,8 @@ public class AttackController : MonoBehaviour
             
             if (type == AttackType.melee)
             {
-                int index = Random.Range(0, 4);
-                _animator.SetInteger("AttackIndex", index);
-                _animator.SetTrigger("MeleeAttack");
-                cooldown = (index == 1) ? _weapon.MeleeCooldown  : _weapon.MeleeCooldown - 1;
-                if (index != 1) Invoke("MeleeAttackCheck", _hitReactionTime);
-                else Invoke("MeleeAttackCheck", _hitReactionTime + 0.5f);
-
+                _animator.SetTrigger("Combo");
+                cooldown = _weapon.MeleeCooldown;
             }
             if (type == AttackType.long_range)
             {
@@ -55,6 +48,7 @@ public class AttackController : MonoBehaviour
             Invoke("ResetAttack", cooldown);
         }
     }
+
     
     void MeleeAttackCheck()
     {
@@ -72,7 +66,6 @@ public class AttackController : MonoBehaviour
     void ArrowSpawn()
     {
         GameObject arrow = Instantiate(_arrowClone, _arrowPoint.position, _arrowPoint.rotation);
-        GameObject arrowFX = Instantiate(_arrowFXClone, _arrowPoint.position, _arrowPoint.rotation);
         arrow.GetComponent<Rigidbody>().AddForce(transform.forward * _bowShotForce, ForceMode.Impulse);
         Destroy(arrow, 20f);
     }

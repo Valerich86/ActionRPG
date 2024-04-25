@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a50affd27ed704e4fa0430db4fdc2423, type: 3}
+  m_Name: Bow
+  m_EditorClassIdentifier: 
+  <Clone>k__BackingField: {fileID: 1019188561688538036, guid: 46288aa319f8db94dbdf50e9f7d2efd0,
+    type: 3}
+  <Type>k__BackingField: 1
+  <Damage>k__BackingField: 10
+  <Cooldown>k__BackingField: 1.5
+  <MeleeCooldown>k__BackingField: 1.5
+  <Range>k__BackingField: 1.5
+  <WeaponRange>k__BackingField: {x: 0, y: 1, z: 0}

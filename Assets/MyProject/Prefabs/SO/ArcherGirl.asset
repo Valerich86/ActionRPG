@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a9594ae3fcc8c418e816a2ad8e7f9f, type: 3}
+  m_Name: ArcherGirl
+  m_EditorClassIdentifier: 
+  <Clone>k__BackingField: {fileID: 7542933435320567430, guid: 3b4ef4f58083d3d49b9d7cd2a8330cdf,
+    type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: b0647f8e5f9586b4a887d50743e769f5,
+    type: 3}
+  <Speed>k__BackingField: 5
+  <RotationSpeed>k__BackingField: 200
+  <MaxJumpForce>k__BackingField: 1.2
+  <Weapon>k__BackingField: {fileID: 11400000, guid: fc947470f60bca142adb5017f4a30b33,
+    type: 2}
+  <MaxHP>k__BackingField: 200
+  Defense: 0

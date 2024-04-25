@@ -16,7 +16,12 @@ public class EnemyHealthbar : MonoBehaviour
         _hpController.OnHealthChanged += OnHealthChanged;
     }
 
-    private void OnHealthChanged(HPController health) => _healthbar.fillAmount = health.CurrentHP / health.MaxHP;
+    private void OnHealthChanged(HPController health)
+    {
+        _healthbar.fillAmount = health.CurrentHP / health.MaxHP;
+        if (_healthbar.fillAmount <= 0) Destroy(gameObject);
+    }
+
 
     private void Update() => transform.LookAt(_camera.transform);
 

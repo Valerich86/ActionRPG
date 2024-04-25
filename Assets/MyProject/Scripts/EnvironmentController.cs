@@ -2,30 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnvironmentController : MonoBehaviour
 {
 
-    public TerrainLayer WaterLayer;
-    [SerializeField] private float _waterOffsetY;
+    public TerrainLayer LavaLayer;
+    [SerializeField] private Transform _playerSpawnPosition;
+    [SerializeField] private EnemySO[] _enemyTypes;
+    [SerializeField] private int _enemyCount;
 
-    private bool _tide;
-    private float _waterOffsetCount;
-    void Start()
+    private float _lavaMaxOffset = 5;
+    private float _lavaOffsetCount = 0;
+    void Awake()
     {
-        _waterOffsetCount = _waterOffsetY;
+        Instantiate(StaticData.PlayerRole.Clone, _playerSpawnPosition.position, Quaternion.identity);
+        //EnemyRespawn();
     }
 
     void Update()
     {
-        TideChanging();
-        _waterOffsetCount = (_tide == false) ? _waterOffsetCount - Time.deltaTime : _waterOffsetCount + Time.deltaTime;
-        WaterLayer.tileOffset = new Vector2(0, _waterOffsetCount);
+        _lavaOffsetCount += Time.deltaTime;
+        if (_lavaOffsetCount >= _lavaMaxOffset) _lavaOffsetCount = 0;
+        LavaLayer.tileOffset = new Vector2(0, _lavaOffsetCount);
     }
 
-    private void TideChanging()
+    private void EnemyRespawn()
     {
-        if (_waterOffsetCount >= _waterOffsetY) _tide = false;
-        if (_waterOffsetCount <= 0) _tide = true;
+        foreach(var type in _enemyTypes)
+        {
+            for (int i = 0; i < _enemyCount; i++)
+            {
+                NavMeshTriangulation data = NavMesh.CalculateTriangulation();
+                int index = Random.Range(0, data.vertices.Length);
+                Vector3 randomPoint = data.vertices[index];
+                Instantiate(type.Clone, randomPoint, Quaternion.identity);
+            }
+        }
     }
 }

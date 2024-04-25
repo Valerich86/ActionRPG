@@ -7,34 +7,46 @@ public class HPController : MonoBehaviour
     public float MaxHP => _maxhp;
     public float CurrentHP { get; private set; }
 
-    [SerializeField] private float _maxhp;
     [SerializeField] private GameObject _bloodClone;
     [SerializeField] private GameObject _bloodClone2;
     [SerializeField] private Transform _bloodPoint;
 
+    private float _maxhp;
     private Animator _animator;
-    private void Start()
+    private DefenseType _defenseType;
+    private bool InBlock;
+    private void Start() => _animator = gameObject.GetComponent<Animator>();
+
+    public void SetStartHealth(float startHealth)
     {
+        _maxhp = startHealth;
         CurrentHP = _maxhp;
-        _animator = gameObject.GetComponent<Animator>();
     }
+
+    public void SetDefenseType(DefenseType defType) => _defenseType = defType;
+    
     public void TakeDamage(float damage)
     {
         if (TryGetComponent<EnemyController>(out EnemyController enemy))
         {
             int variant = UnityEngine.Random.Range(0, 3);
-            if (variant == 0 && enemy.SetRollAbility())
+            if (variant == 0 && _defenseType == DefenseType.CanRoll)
             {
                 _animator.SetTrigger("RollBack");
+                return;
             }
-            else if (variant == 0 && !enemy.SetRollAbility())
+            else if (variant == 0 && _defenseType == DefenseType.CanBlock)
             {
-                _animator.SetBool("Blocking", true);
-                Invoke("ResetBlock", 2f);
+                SetBlock();
+                Invoke("ResetBlock", 1.8f);
+                return;
             }
-            else SetDamage(damage);
         }
-        else SetDamage(damage);
+        else if (TryGetComponent<PlayerController>(out PlayerController player))
+        {
+            if (InBlock) return;
+        }
+        SetDamage(damage);
     }
 
     private void SetDamage(float damage)
@@ -63,6 +75,15 @@ public class HPController : MonoBehaviour
         }
     }
 
-    private void ResetBlock() => _animator.SetBool("Blocking", false);
+    public void SetBlock()
+    {
+        _animator.SetBool("Blocking", true);
+        InBlock = true;
+    }
+    public void ResetBlock()
+    {
+        _animator.SetBool("Blocking", false);
+        InBlock = false;
+    }
 
 }

@@ -61,19 +61,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\MyProject\Scripts\MainMenuController.cs" />
+    <Compile Include="Assets\MyProject\Scripts\EnemySO.cs" />
     <Compile Include="Assets\Game Buffs\Free Stylized Textures\Scripts\GameBuffsInitializer.cs" />
     <Compile Include="Assets\MyProject\Scripts\AttackController.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\MyProject\Scripts\EnvironmentController.cs" />
-    <Compile Include="Assets\MyProject\Scripts\WeaponController.cs" />
     <Compile Include="Assets\MyProject\Scripts\EnemyHealthbar.cs" />
     <Compile Include="Assets\AA_UniversalCharacter\Scripts\CustomButton.cs" />
+    <Compile Include="Assets\MyProject\Scripts\Role.cs" />
     <Compile Include="Assets\MyProject\Scripts\HPController.cs" />
     <Compile Include="Assets\MyProject\Scripts\ArrawController.cs" />
     <Compile Include="Assets\MyProject\Scripts\EnemyController.cs" />
     <Compile Include="Assets\MyProject\UI\Art\FantasyIconsPackFree\Demo\IconViewer.cs" />
     <Compile Include="Assets\MyProject\Scripts\PlayerController.cs" />
     <Compile Include="Assets\AA_UniversalCharacter\Scripts\ModulesShaker.cs" />
+    <Compile Include="Assets\MyProject\Scripts\Weapon.cs" />
+    <Compile Include="Assets\MyProject\Scripts\StaticData.cs" />
     <Compile Include="Assets\MyProject\Scripts\HudController.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +84,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\SimpleFX\Materials\UnlitVertexColour_Alpha.shader" />
+    <None Include="Assets\TextMesh Pro\Fonts\Bad_Script\OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
