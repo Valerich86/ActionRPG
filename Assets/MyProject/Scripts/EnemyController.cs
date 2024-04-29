@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class EnemyController : MonoBehaviour, IMortal
 {
-    [SerializeField] private EnemySO _enemy;
+    [field: SerializeField] public EnemySO Enemy { get; private set; }
 
     private AttackController _attackController;
     private HPController _hpController;
@@ -25,9 +22,9 @@ public class EnemyController : MonoBehaviour, IMortal
         _attackController = GetComponent<AttackController>();
         _hpController = GetComponent<HPController>();   
         _animator = GetComponent<Animator>();
-        _attackController.SetWeapon(_enemy.Weapon);
-        _hpController.SetStartHealth(_enemy.MaxHP);
-        _maxSpeed = _enemy.Speed;
+        _attackController.SetEnemyWeapon(Enemy.Weapon);
+        _hpController.SetStartHealth(Enemy.MaxHP);
+        _maxSpeed = Enemy.Speed;
         FindNewPoint();
     }
 
@@ -47,27 +44,27 @@ public class EnemyController : MonoBehaviour, IMortal
             {
                 FindNewPoint();
             }
-            else if (distance <= _enemy.AgentEnabledDistance)
+            else if (distance <= Enemy.AgentEnabledDistance)
             {
                 _isSearching = false;  
                 _agent.SetDestination(_player.position);
                 transform.LookAt(_player.position);
-                if (_enemy.Defense == DefenseType.CanRoll && distance <= _enemy.MeleeAttackDistance + 2f && distance >= _enemy.MeleeAttackDistance + 1.8f)
+                if (Enemy.Defense == DefenseType.CanRoll && distance <= Enemy.MeleeAttackDistance + 2f && distance >= Enemy.MeleeAttackDistance + 1.8f)
                 {
                     _animator.SetTrigger("RollForward");
                     _agent.speed = _maxSpeed;
                 }
-                else if (distance <= _enemy.ShootingDistance && distance > _enemy.MeleeAttackDistance * 2 && _enemy.Weapon.Type == AttackType.long_range)
+                else if (distance <= Enemy.ShootingDistance && distance > Enemy.MeleeAttackDistance * 2 && Enemy.Weapon.WeaponSO.Type == AttackType.long_range)
                 {
                     _animator.SetFloat("Speed", 1);
                     _agent.speed = _maxSpeed;
-                    _attackController.Attack(AttackType.long_range);
+                    _attackController.Attack();
                 }
-                else if (distance <= _enemy.MeleeAttackDistance)
+                else if (distance <= Enemy.MeleeAttackDistance)
                 {
                     _animator.SetFloat("Speed", 0.1f);
                     _agent.speed = _maxSpeed/3;
-                    _attackController.Attack(AttackType.melee);
+                    _attackController.Attack();
                 }
                 else
                 {
@@ -92,9 +89,10 @@ public class EnemyController : MonoBehaviour, IMortal
 
     public void Dying()
     {
+        StaticData.OnEnemyDying?.Invoke(this);
         _agent.enabled = false;
         GetComponent<Collider>().enabled = false;
-        Destroy(gameObject, 10f);
+        Destroy(gameObject, 30f);
     }
 
 }

@@ -12,10 +12,12 @@ GameObject:
   - component: {fileID: 9083666241189614318}
   - component: {fileID: 6479374847741814308}
   - component: {fileID: 7248188417030202318}
+  - component: {fileID: 3440622906611195392}
   - component: {fileID: 3392338388284784342}
+  - component: {fileID: 9093291193701739063}
   m_Layer: 0
   m_Name: Hammer_01
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,6 +108,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.36132836, y: 0.24032244, z: 0.2414696}
   m_Center: {x: -0.0000014029713, y: 0.50897974, z: 0.00000007907751}
+--- !u!136 &3440622906611195392
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4822125295973681137}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1
+  m_Height: 0.85235333
+  m_Direction: 1
+  m_Center: {x: 0.0000000060489334, y: 0.2029685, z: 0.00000007771481}
 --- !u!54 &3392338388284784342
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -129,7 +154,20 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &9093291193701739063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4822125295973681137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6efec7ac41570574798729dc2517f3f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemSO: {fileID: 11400000, guid: c69ba8450fd94e548ba107bde9c90e7b, type: 2}

@@ -1,35 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class ArrawController : MonoBehaviour
 {
-    private Transform _parent;
     private Rigidbody _rigidbody;
-    private Collider _collider;
-    private float _damage = 10;
+    private float _damage = 15;
+    private Transform _parent;
 
-    private void Start()
+    private void Start() => _rigidbody = GetComponent<Rigidbody>();
+
+    private void Update()
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        _collider = GetComponent<Collider>();
+        if (_parent != null) transform.position = _parent.position;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         _rigidbody.isKinematic = true;
-        _collider.enabled = false;
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.TryGetComponent<HPController>(out HPController hpController))
         {
-            //if (collision.gameObject.TryGetComponent<PlayerController>(out PlayerController player))
-            //{
-            //    _parent = player.SetCurrentVulnerablePart();
-            //}
-            if (collision.gameObject.TryGetComponent<HPController>(out HPController hpController))
-            {
-                hpController.TakeDamage(_damage);
-            }
-            transform.parent = collision.transform;
+            int index = UnityEngine.Random.Range(0, hpController.DamagePoints.Length);
+            _parent = hpController.DamagePoints[index];
+            transform.parent = _parent;
+            hpController.TakeDamage(_damage);
         }
+        else transform.parent = collision.transform;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+            StaticData.OnArrowAmountChanged?.Invoke(1);
+            StaticData.OnGlobalHintChanged?.Invoke("+ 1 стрела !", 3);
+        }
+            
     }
 }

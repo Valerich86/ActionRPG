@@ -1,58 +1,66 @@
 
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR;
 
 public enum AttackType { melee, long_range }
 public class AttackController : MonoBehaviour
 {
-    [HideInInspector] public bool IsAttacking;
+    [HideInInspector] public bool IsAttacking { get; private set; }
+    [HideInInspector] public int ArrowAmount { get; private set; }
 
     [SerializeField] private LayerMask _attackingMask;
-    [SerializeField] private GameObject _arrowClone;
     [SerializeField] private Transform _arrowPoint;
-    [SerializeField] private float _arrowSpawnTime = 1;
-    [SerializeField] private float _bowShotForce;
     
     private Collider[] _hits = new Collider[5];
     private Animator _animator;
     private Weapon _weapon;
+    private Transform _weaponHand;
+    private Vector3 _rangeOffset = new Vector3(0, 1, 0);
+    private int _arrowAmount;
 
     private void Start()
     {
+        _weaponHand = FindObjectOfType<WeaponHand>().transform;
         _animator = gameObject.GetComponent<Animator>();
         ResetAttack();
     }
 
     private void ResetAttack() => IsAttacking = false;
 
-    public void SetWeapon(Weapon weapon) => _weapon = weapon;
 
-    public void Attack(AttackType type)
+    public void SetPlayerWeapon(ItemSO weapon)
+    {
+        GameObject w = Instantiate(weapon.Clone, _weaponHand);
+        if (w.TryGetComponent<Rigidbody>(out var rb)) rb.isKinematic = true;
+        if (w.TryGetComponent<ItemController>(out var ic)) ic.Deactivate();
+        _weapon = weapon.WeaponSO;
+    }
+
+    public void Attack()
     {
         if (IsAttacking == false)
         {
-            float cooldown = 0;
-            IsAttacking = true;
-            
-            if (type == AttackType.melee)
+            if (_weapon == null) return;
+            else
             {
-                _animator.SetTrigger("Combo");
-                cooldown = _weapon.MeleeCooldown;
+                IsAttacking = true;
+                if (_weapon.Type == AttackType.melee) _animator.SetTrigger("Combo");
+                if (_weapon.Type == AttackType.long_range && _arrowAmount > 0)
+                {
+                    _animator.SetTrigger("BowShot");
+                    Invoke("ArrowSpawn", .5f);
+                }
+                Invoke("ResetAttack", _weapon.Cooldown);
             }
-            if (type == AttackType.long_range)
-            {
-                _animator.SetTrigger("BowShot");
-                Invoke("ArrowSpawn", _arrowSpawnTime);
-                cooldown = _weapon.Cooldown;
-            }
-            
-            Invoke("ResetAttack", cooldown);
         }
     }
 
     
     void MeleeAttackCheck()
     {
-        int count = Physics.OverlapSphereNonAlloc(transform.position + _weapon.WeaponRange, _weapon.Range, _hits, _attackingMask);
+        int count = Physics.OverlapSphereNonAlloc(transform.position + _rangeOffset, _weapon.MeleeRange, _hits, _attackingMask);
 
         for (int i = 0; i < count; i++)
         {
@@ -65,10 +73,14 @@ public class AttackController : MonoBehaviour
 
     void ArrowSpawn()
     {
-        GameObject arrow = Instantiate(_arrowClone, _arrowPoint.position, _arrowPoint.rotation);
-        arrow.GetComponent<Rigidbody>().AddForce(transform.forward * _bowShotForce, ForceMode.Impulse);
-        Destroy(arrow, 20f);
+        GameObject arrow = Instantiate(_weapon.ArrowClone, _arrowPoint.position, _arrowPoint.rotation);
+        arrow.GetComponent<Rigidbody>().AddForce(transform.forward * _weapon.BowShotForce, ForceMode.Impulse);
+        StaticData.OnArrowAmountChanged?.Invoke(-1);
     }
+
+    public void SetCurrentArrowsAmount(int amount) => _arrowAmount = amount;
+    internal void SetEnemyWeapon(ItemSO weapon) => _weapon = weapon.WeaponSO;
+    
 
     //private void OnDrawGizmosSelected()
     //{

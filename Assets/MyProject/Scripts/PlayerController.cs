@@ -15,8 +15,6 @@ public class PlayerController : MonoBehaviour, IMortal
 {
     public event Action OnPlayerDying;
 
-    [SerializeField] private Transform[] _vulnerableParts;
-
     private CharacterController _controller;
     private HPController _hpController;
     private Animator _animator;
@@ -29,9 +27,9 @@ public class PlayerController : MonoBehaviour, IMortal
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _attackController = gameObject.GetComponent<AttackController>();
-        _attackController.SetWeapon(StaticData.PlayerRole.Weapon);
         _hpController = gameObject.GetComponent<HPController>();
         _hpController.SetStartHealth(StaticData.PlayerRole.MaxHP);
+        FindObjectOfType<InventoryController>().SetStartMoney(StaticData.PlayerRole.StartMoney);
     }
 
 
@@ -53,7 +51,11 @@ public class PlayerController : MonoBehaviour, IMortal
         {
             _hpController.ResetBlock();
         }
-        if (Input.GetMouseButton(1) && StaticData.PlayerRole.Defense == DefenseType.CanRoll)
+        if ((Input.GetKey(KeyCode.W)) && Input.GetKeyDown(KeyCode.E) && StaticData.PlayerRole.Defense == DefenseType.CanRoll)
+        {
+            _animator.SetTrigger("RollForward");
+        }
+        if ((Input.GetKey(KeyCode.S)) && Input.GetKeyDown(KeyCode.Q) && StaticData.PlayerRole.Defense == DefenseType.CanRoll)
         {
             _animator.SetTrigger("RollBack");
         }
@@ -75,7 +77,7 @@ public class PlayerController : MonoBehaviour, IMortal
 
     void Attack()
     {
-        if (Input.GetMouseButtonDown(0) && !_isDead) _attackController.Attack(StaticData.PlayerRole.Weapon.Type);
+        if (Input.GetMouseButtonDown(0) && !_isDead) _attackController.Attack();
     }
 
 
@@ -92,14 +94,10 @@ public class PlayerController : MonoBehaviour, IMortal
     private void ReturnDirectionY() => _jumpForce = 0;
     
 
-    public Transform SetCurrentVulnerablePart()
-    {
-        int choice = UnityEngine.Random.Range(0, _vulnerableParts.Length);
-        return _vulnerableParts[choice];
-    }
     public void Dying()
     {
         _isDead = true;
         OnPlayerDying?.Invoke();
     }
+
 }

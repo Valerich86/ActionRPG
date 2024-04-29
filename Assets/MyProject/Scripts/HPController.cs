@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class HPController : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class HPController : MonoBehaviour
     public float MaxHP => _maxhp;
     public float CurrentHP { get; private set; }
 
+    public Transform[] DamagePoints;
     [SerializeField] private GameObject _bloodClone;
     [SerializeField] private GameObject _bloodClone2;
     [SerializeField] private Transform _bloodPoint;
@@ -49,7 +51,7 @@ public class HPController : MonoBehaviour
         SetDamage(damage);
     }
 
-    private void SetDamage(float damage)
+    public void SetDamage(float damage)
     {
         CurrentHP -= damage;
         OnHealthChanged?.Invoke(this);
@@ -84,6 +86,14 @@ public class HPController : MonoBehaviour
     {
         _animator.SetBool("Blocking", false);
         InBlock = false;
+    }
+
+
+    public void Healing(int healPercent)
+    {
+        CurrentHP += MaxHP * healPercent / 100;
+        if(CurrentHP > MaxHP) CurrentHP = MaxHP;
+        OnHealthChanged?.Invoke(this);
     }
 
 }

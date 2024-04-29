@@ -11,9 +11,13 @@ public class Role : ScriptableObject
     [field: SerializeField] public float Speed { get; private set; }
     [field: SerializeField] public float RotationSpeed { get; private set; }
     [field: SerializeField] public float MaxJumpForce { get; private set; }
-    [field: SerializeField] public Weapon Weapon { get; private set; }
+    [field: SerializeField] public ItemSO Weapon { get; private set; }
     [field: SerializeField] public float MaxHP { get; private set; }
+    [field: SerializeField] public int StartMoney { get; private set; }
 
     [field: SerializeField] public DefenseType Defense;
 
+    [Header("")]
+    [Header("For 'Blacksmith' only:")]
+    public ItemSO Shield;
 }

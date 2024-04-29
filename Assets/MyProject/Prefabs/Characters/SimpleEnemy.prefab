@@ -3382,7 +3382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee12d7601c249a43a2968fce5c56448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 11400000, guid: d92951029292c2645aa8f44be2741103, type: 2}
+  <Enemy>k__BackingField: {fileID: 11400000, guid: d92951029292c2645aa8f44be2741103,
+    type: 2}
 --- !u!114 &175932722251693393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3395,6 +3396,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee176863c7f9f6c4ea9c09fcf039ac65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamagePoints:
+  - {fileID: 1209681098770633734}
+  - {fileID: 3015614060040853281}
+  - {fileID: 2758446482760311531}
+  - {fileID: 1300948114311580118}
+  - {fileID: 3508753222329787875}
   _bloodClone: {fileID: 1600766774483431791, guid: 207b8a466c391e3489832fb7a327b930,
     type: 3}
   _bloodClone2: {fileID: 1600766774483431791, guid: cd7def8df024a0f429d8da5abeb107f5,
@@ -3412,15 +3419,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfdb2dd657102714aa794b3d09b6378c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsAttacking: 0
   _attackingMask:
     serializedVersion: 2
     m_Bits: 128
-  _arrowClone: {fileID: 8619474437445739543, guid: b3f74f4dc2fedac40bc0a500638d80f9,
-    type: 3}
   _arrowPoint: {fileID: 6851587816225534442}
-  _arrowSpawnTime: 1
-  _bowShotForce: 0
 --- !u!1 &4430578888763791496
 GameObject:
   m_ObjectHideFlags: 0

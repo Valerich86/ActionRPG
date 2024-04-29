@@ -8,11 +8,14 @@ using UnityEngine;
 
 public class Weapon : ScriptableObject
 {
-    [field: SerializeField] public GameObject Clone { get; private set; }
     [field: SerializeField] public AttackType Type { get; private set; }
     [field: SerializeField] public float Damage { get; private set; }
     [field: SerializeField] public float Cooldown { get; private set; }
-    [field: SerializeField] public float MeleeCooldown { get; private set; }
-    [field: SerializeField] public float Range { get; private set; }
-    [field: SerializeField] public Vector3 WeaponRange { get; private set; }
+    [field: SerializeField] public float MeleeRange { get; private set; }
+
+    [Header("")]
+    [Header("For 'Bow' only:")]
+    public GameObject ArrowClone;
+    public float BowShotForce;
+    public int StartArrowAmount;
 }
