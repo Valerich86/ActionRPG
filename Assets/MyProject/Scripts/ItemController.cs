@@ -14,10 +14,6 @@ public class ItemController : MonoBehaviour
             StaticData.OnItemPicked?.Invoke(this);
     }
 
-    public void Deactivate()
-    {
-        _isActive = false;
-        Debug.Log("деактивация");
-    }
+    public void Deactivate() => _isActive = false;
     
 }

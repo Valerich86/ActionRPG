@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,11 +16,12 @@ public class HudController : MonoBehaviour
     private HPController _hpController;
     private float _experience = 0;
 
-    void Start()
+
+    public void Construct(HPController hp)
     {
         Cursor.lockState = CursorLockMode.Locked;
         _inventoryWindow.enabled = false;
-        _hpController = FindObjectOfType<PlayerController>().GetComponent<HPController>();
+        _hpController = hp;
         _hpController.OnHealthChanged += OnHealthChanged;
         StaticData.OnHintChanged += SetHint;
         StaticData.OnGlobalHintChanged += SetGlobalHint;
@@ -56,12 +58,12 @@ public class HudController : MonoBehaviour
         _experience += enemy.Enemy.Exp;
         SetGlobalHint($"+ {enemy.Enemy.Exp} опыта !", 3);
     }
-    
 
-    public void SetGlobalHint(string hint, int sec)
+
+    public void SetGlobalHint(string hint, int time)
     {
         _globalHint.text = hint;
-        Invoke("ClearGlobalHint", sec);
+        Invoke("ClearGlobalHint", time);
     }
 
     public void SetHint(string hint)

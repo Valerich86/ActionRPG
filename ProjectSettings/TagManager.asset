@@ -8,6 +8,7 @@ TagManager:
   - Item
   - Weapon
   - HandForWeapon
+  - Armory
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - PlayerWeapon
   - Player
   - CameraCollision
-  - 
+  - BlacksmithShop
   - 
   - 
   - 

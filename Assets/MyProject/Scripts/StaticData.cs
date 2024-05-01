@@ -11,6 +11,8 @@ public static class StaticData
     public static Action OnCellExit;
     public static Action<EnemyController> OnEnemyDying;
     public static Action<int> OnArrowAmountChanged;
+    public static Action<int> OnItemSold;
+    public static Action<int> OnCameraChanged;
 
     public static Role PlayerRole;
 }

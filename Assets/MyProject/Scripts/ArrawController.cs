@@ -33,7 +33,7 @@ public class ArrawController : MonoBehaviour
         {
             Destroy(gameObject);
             StaticData.OnArrowAmountChanged?.Invoke(1);
-            StaticData.OnGlobalHintChanged?.Invoke("+ 1 стрела !", 3);
+            StaticData.OnGlobalHintChanged?.Invoke("+ 1 стрела !", 10);
         }
             
     }

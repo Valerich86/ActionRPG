@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
@@ -21,6 +22,8 @@ public class PlayerController : MonoBehaviour, IMortal
     private AttackController _attackController;
     private float _jumpForce = 0;
     private bool _isDead = false;
+    private bool _canMove = false;
+
 
     void Start()
     {
@@ -29,16 +32,26 @@ public class PlayerController : MonoBehaviour, IMortal
         _attackController = gameObject.GetComponent<AttackController>();
         _hpController = gameObject.GetComponent<HPController>();
         _hpController.SetStartHealth(StaticData.PlayerRole.MaxHP);
-        FindObjectOfType<InventoryController>().SetStartMoney(StaticData.PlayerRole.StartMoney);
+        StartCoroutine(OnStart());
     }
 
+    private IEnumerator OnStart()
+    {
+        _animator.Play("Die");
+        yield return new WaitForSeconds(10);
+        _animator.Play("Movement");
+        _canMove = true;
+    }
 
     void Update()
     {
-        Movement();
-        Attack();
-        Defense();
-        Jump();
+        if (_canMove)
+        {
+            Movement();
+            Attack();
+            Defense();
+            Jump();
+        }
     }
 
     private void Defense()
@@ -100,4 +113,10 @@ public class PlayerController : MonoBehaviour, IMortal
         OnPlayerDying?.Invoke();
     }
 
+
+    public void ResetMovement(bool value)
+    {
+        _canMove = value;
+        _animator.SetFloat("Speed", 0);
+    }
 }

@@ -90,6 +90,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3035329140496943230, guid: 0aa93acfaad9bc74287c377b957dc0dc,
         type: 3}
+      propertyPath: LightsModule.light
+      value: 
+      objectReference: {fileID: 5134205126913151149}
+    - target: {fileID: 3035329140496943230, guid: 0aa93acfaad9bc74287c377b957dc0dc,
+        type: 3}
+      propertyPath: LightsModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3035329140496943230, guid: 0aa93acfaad9bc74287c377b957dc0dc,
+        type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 5
       objectReference: {fileID: 0}
@@ -97,6 +107,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745349599094719097, guid: 0aa93acfaad9bc74287c377b957dc0dc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6088102990811815701, guid: 0aa93acfaad9bc74287c377b957dc0dc,
         type: 3}
@@ -116,6 +131,12 @@ PrefabInstance:
 --- !u!4 &386606502706051140 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1612453204637218812, guid: 0aa93acfaad9bc74287c377b957dc0dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1386287580411137976}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &5134205126913151149 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 6088102990811815701, guid: 0aa93acfaad9bc74287c377b957dc0dc,
     type: 3}
   m_PrefabInstance: {fileID: 1386287580411137976}
   m_PrefabAsset: {fileID: 0}

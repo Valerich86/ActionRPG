@@ -1,14 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEditor.Progress;
 
-
+public enum ItemAction { Use, Sell};
 public enum ItemAssignment { Equipment, Loot, Money }
 public enum ItemType { Weapon, Armor, Shield, Ability, Food, Cure, Key, ForSale, Other }
 public class InventoryController : MonoBehaviour
@@ -27,14 +22,18 @@ public class InventoryController : MonoBehaviour
     private bool _isStartItemPicked = false;
     private bool _isStartItemEquiped = false;
 
-    void Start()
+
+    public void Construct(PlayerController player, int startMoney)
     {
-        _playerController = FindObjectOfType<PlayerController>();
+        _playerController = player;
+        _currentMoney = startMoney;
         StaticData.OnItemPicked += CheckCell;
+        StaticData.OnItemSold += SetMoney;
         StaticData.OnCellEnter += SetDescriptions;
         StaticData.OnCellExit += ClearDescriptions;
         StaticData.OnArrowAmountChanged += SetCurrentArrowAmount;
         _arrow.SetActive(false);
+        gameObject.SetActive(true);
         ClearDescriptions();
     }
 
@@ -44,7 +43,6 @@ public class InventoryController : MonoBehaviour
         _arrow.GetComponentInChildren<TextMeshProUGUI>().text = ArrowAmount.ToString();
     }
 
-    public void SetStartMoney(int startMoney) => _currentMoney = startMoney;
     public void SetCurrentArrowAmount(int amount)
     {
         ArrowAmount += amount;
@@ -94,13 +92,13 @@ public class InventoryController : MonoBehaviour
         if (_isStartItemPicked == false && item.ItemSO.WeaponSO != null)
         {
             _isStartItemPicked = true;
-            StaticData.OnGlobalHintChanged?.Invoke("Теперь нужно зайти в инвентарь и назначить оружие персонажу", 1000);
+            StaticData.OnGlobalHintChanged?.Invoke("Надо бы проверить инвентарь...", 10);
         }
         if (item.ItemSO.Assignment == ItemAssignment.Money)
         {
             StaticData.OnHintChanged?.Invoke($"Вы подобрали '{item.ItemSO.Tytle}'");
             Destroy(item.gameObject);
-            SetMoney(item.ItemSO);
+            SetMoney(item.ItemSO.Price);
             return;
         }
         if (_lootsAmount < _lootCells.Length)
@@ -117,7 +115,8 @@ public class InventoryController : MonoBehaviour
         if (_isStartItemEquiped == false)
         {
             _isStartItemEquiped = true;
-            StaticData.OnGlobalHintChanged?.Invoke("Теперь можно вступить в бой!", 5);
+            StaticData.OnGlobalHintChanged?.Invoke("Отлично, теперь можно и в бой!", 5);
+            StartCoroutine(ShowSomeHint("Неподалеку должна быть оружейная лавка. Возможно, найду там что-то полезное", 10));
         }
         ItemSO currentItem;
         if (!_equipCells[0].IsEmpty)
@@ -135,16 +134,22 @@ public class InventoryController : MonoBehaviour
         _playerController.gameObject.GetComponent<AttackController>().SetPlayerWeapon(weapon);
     }
 
-    private void SetMoney(ItemSO money) => _currentMoney += money.Price;
+    private void SetMoney(int money) => _currentMoney += money;
     private void SetShield(ItemSO itemSO)
     {
         throw new NotImplementedException();
     }
 
+    private IEnumerator ShowSomeHint(string hint, float time)
+    {
+        yield return new WaitForSeconds(time);
+        StaticData.OnGlobalHintChanged?.Invoke(hint, 10);
+    }
 
     private void OnDisable()
     {
         StaticData.OnItemPicked -= CheckCell;
+        StaticData.OnItemSold -= SetMoney;
         StaticData.OnCellEnter -= SetDescriptions;
         StaticData.OnCellExit -= ClearDescriptions;
         StaticData.OnArrowAmountChanged -= SetCurrentArrowAmount;

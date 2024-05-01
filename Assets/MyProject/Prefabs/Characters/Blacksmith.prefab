@@ -3856,7 +3856,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfdb2dd657102714aa794b3d09b6378c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsAttacking: 0
   _attackingMask:
     serializedVersion: 2
     m_Bits: 8
@@ -3873,6 +3872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee176863c7f9f6c4ea9c09fcf039ac65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamagePoints: []
   _bloodClone: {fileID: 1600766774483431791, guid: 207b8a466c391e3489832fb7a327b930,
     type: 3}
   _bloodClone2: {fileID: 1600766774483431791, guid: cd7def8df024a0f429d8da5abeb107f5,
@@ -4978,8 +4978,8 @@ MonoBehaviour:
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
   m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_YDamping: 3
+  m_ZDamping: 3
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5

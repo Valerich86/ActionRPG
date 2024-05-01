@@ -16,13 +16,15 @@ public class AttackController : MonoBehaviour
     private Collider[] _hits = new Collider[5];
     private Animator _animator;
     private Weapon _weapon;
-    private Transform _weaponHand;
+    private Transform _rightHand;
+    private Transform _leftHand;
     private Vector3 _rangeOffset = new Vector3(0, 1, 0);
     private int _arrowAmount;
 
     private void Start()
     {
-        _weaponHand = FindObjectOfType<WeaponHand>().transform;
+        _rightHand = FindObjectOfType<WeaponHand>().transform;
+        _leftHand = FindObjectOfType<ShieldHand>().transform;
         _animator = gameObject.GetComponent<Animator>();
         ResetAttack();
     }
@@ -32,7 +34,10 @@ public class AttackController : MonoBehaviour
 
     public void SetPlayerWeapon(ItemSO weapon)
     {
-        GameObject w = Instantiate(weapon.Clone, _weaponHand);
+        GameObject w = null;
+        if (weapon.WeaponSO.Type == AttackType.long_range) w = Instantiate(weapon.Clone, _leftHand);
+        else if (weapon.WeaponSO.Type == AttackType.melee) w = Instantiate(weapon.Clone, _rightHand);
+        Debug.Log($"type: {weapon.WeaponSO.Type}");
         if (w.TryGetComponent<Rigidbody>(out var rb)) rb.isKinematic = true;
         if (w.TryGetComponent<ItemController>(out var ic)) ic.Deactivate();
         _weapon = weapon.WeaponSO;

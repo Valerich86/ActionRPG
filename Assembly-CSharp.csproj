@@ -66,6 +66,7 @@
     <Compile Include="Assets\MyProject\Scripts\LavaController.cs" />
     <Compile Include="Assets\MyProject\Scripts\EquipCellController.cs" />
     <Compile Include="Assets\MyProject\Scripts\AttackController.cs" />
+    <Compile Include="Assets\MyProject\Scripts\ArmoryController.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\MyProject\Scripts\ShieldHand.cs" />
     <Compile Include="Assets\MyProject\Scripts\ItemController.cs" />
