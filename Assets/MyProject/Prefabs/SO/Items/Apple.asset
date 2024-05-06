@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Apple
   m_EditorClassIdentifier: 
   <Tytle>k__BackingField: "\u042F\u0431\u043B\u043E\u043A\u043E"
-  <Placement>k__BackingField: 1
-  <Type>k__BackingField: 4
+  <Assignment>k__BackingField: 1
+  <Type>k__BackingField: 5
   <Clone>k__BackingField: {fileID: 1730984726088038889, guid: d1d745be193d4ba4583da8b5bcb82617,
     type: 3}
   <Icon>k__BackingField: {fileID: 21300000, guid: 3c6e4cf7b21ce294ea42a97024a142c9,
     type: 3}
   <Description>k__BackingField: "\u0412\u043E\u0441\u0441\u0442\u0430\u043D\u0430\u0432\u043B\u0438\u0432\u0430\u0435\u0442
-    10% \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F"
-  <Price>k__BackingField: 100
-  HealPercents: 0
+    5% \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F"
+  <Price>k__BackingField: 50
+  HealPercents: 5
+  WeaponSO: {fileID: 0}

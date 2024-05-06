@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class LevelController : MonoBehaviour
 {
@@ -28,8 +29,9 @@ public class LevelController : MonoBehaviour
     private GameObject _item;
     void Awake()
     {
-        _mainCamera.Priority = 1;
-        StaticData.OnEnemyDying += SpawnMoney;
+        //Cursor.lockState = CursorLockMode.Locked;
+        ChangeCameraPriority(1);
+        StaticData.OnEnemyDying += SpawnReward;
         StaticData.OnCameraChanged += ChangeCameraPriority;
         StartCoroutine(LevelStart());
     }
@@ -46,10 +48,11 @@ public class LevelController : MonoBehaviour
         yield return new WaitForSeconds(5);
         _hud.Construct(_player.GetComponent<HPController>());
         _inventory.Construct(_player, StaticData.PlayerRole.StartMoney);
+        yield return new WaitForSeconds(5);
         _hud.gameObject.SetActive(true);
         StaticData.OnGlobalHintChanged?.Invoke("Как всегда, мягкая посадка...", 5);
-        yield return new WaitForSeconds(5);
         ActivateCamera();
+        yield return new WaitForSeconds(3);
         SpawnPlayerItems();
         StaticData.OnGlobalHintChanged?.Invoke("А вот и мои вещи!", 5);
         _caveCamera.gameObject.SetActive(false);
@@ -100,8 +103,13 @@ public class LevelController : MonoBehaviour
 
     private void SpawnPlayerItems()
     {
-        GameObject PlItem = Instantiate(StaticData.PlayerRole.Weapon.Clone, _weaponSpawnPosition.position, Quaternion.identity);
-        Instantiate(_strongShiningFX, PlItem.transform);
+        GameObject PlItem1 = Instantiate(StaticData.PlayerRole.Weapon.Clone, _weaponSpawnPosition.position, Quaternion.identity);
+        Instantiate(_strongShiningFX, PlItem1.transform);
+        if (StaticData.PlayerRole.Type == RoleType.Blacksmith)
+        {
+            GameObject PlItem2 = Instantiate(StaticData.PlayerRole.Shield.Clone, _weaponSpawnPosition.position, Quaternion.identity);
+            Instantiate(_strongShiningFX, PlItem2.transform);
+        }
     }
 
     void SpawnEnemies()
@@ -117,7 +125,7 @@ public class LevelController : MonoBehaviour
 
     
 
-    void SpawnMoney(EnemyController enemy)
+    void SpawnReward(EnemyController enemy)
     {
         GameObject money;
         switch (enemy.Enemy.Reward)
@@ -135,11 +143,15 @@ public class LevelController : MonoBehaviour
         }
         Instantiate(_strongShiningFX, money.transform);
         money.GetComponent<Rigidbody>().AddForce(Vector3.up * 10, ForceMode.Impulse);
+        Instantiate(_strongShiningFX, enemy.Weapon.transform);
+        Rigidbody rb = enemy.Weapon.AddComponent<Rigidbody>();
+        rb.mass = 10;
+        rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
     }
 
     private void OnDisable()
     {
-        StaticData.OnEnemyDying -= SpawnMoney;
+        StaticData.OnEnemyDying -= SpawnReward;
         StaticData.OnCameraChanged -= ChangeCameraPriority;
     }
 

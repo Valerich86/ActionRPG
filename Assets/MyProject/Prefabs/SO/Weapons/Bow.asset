@@ -18,5 +18,5 @@ MonoBehaviour:
   <MeleeRange>k__BackingField: 0
   ArrowClone: {fileID: 8619474437445739543, guid: b3f74f4dc2fedac40bc0a500638d80f9,
     type: 3}
-  BowShotForce: 70
-  StartArrowAmount: 30
+  BowShotForce: 50
+  StartArrowAmount: 20

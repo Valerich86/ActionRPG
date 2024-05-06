@@ -13,7 +13,7 @@ public class LootCellController : MonoBehaviour, IPointerEnterHandler, IPointerE
     [HideInInspector] public ItemSO CurrentItem;
     [HideInInspector] public bool IsEmpty = true;
     [HideInInspector] public int Amount = 0;
-    [HideInInspector] public ItemAction _action;
+    [HideInInspector] public bool CanUse;
 
     private Image _image;
     private TextMeshProUGUI _counter;
@@ -30,6 +30,15 @@ public class LootCellController : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         if (Amount > 1) _counter.text = Amount.ToString();
         else _counter.text = string.Empty;
+
+        if (Input.GetKeyDown(KeyCode.R) && !IsEmpty)
+        {
+            while (Amount > 0)
+            {
+                StaticData.OnItemSold?.Invoke(CurrentItem.Price);
+                ClearCell();
+            }
+        }
     }
     public void SetItem(ItemSO item)
     {
@@ -37,7 +46,8 @@ public class LootCellController : MonoBehaviour, IPointerEnterHandler, IPointerE
         IsEmpty = false;
         _image.sprite = CurrentItem.Icon;
         Amount += 1;
-        _action = ItemAction.Use;
+        CanUse = true;
+        _inventory.UpdateList();
     }
 
     public void ClearCell()
@@ -49,6 +59,7 @@ public class LootCellController : MonoBehaviour, IPointerEnterHandler, IPointerE
             IsEmpty = true;
             _image.sprite = _startSprite;
         }
+        _inventory.UpdateList();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -67,24 +78,29 @@ public class LootCellController : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         if (!IsEmpty)
         {
-            if (_action == ItemAction.Use)
+            if (CanUse)
             {
                 switch (CurrentItem.Type)
                 {
-                    case ItemType.Food:
-                        _player.GetComponent<HPController>().Healing(10);
-                        break;
                     case ItemType.Cure:
                         _player.GetComponent<HPController>().Healing(CurrentItem.HealPercents);
                         break;
                     case ItemType.Weapon:
                         _inventory.SetWeapon(CurrentItem);
                         break;
-                    default: break;
+                    case ItemType.Shield:
+                        _inventory.SetShield(CurrentItem);
+                        break;
+                    case ItemType.Quiver:
+                        _inventory.SetQuiver(CurrentItem);
+                        break;
+                    case ItemType.Armor:
+                        _inventory.SetHelmet(CurrentItem);
+                        break;
+                    default: return;
                 }
             }
             else StaticData.OnItemSold?.Invoke(CurrentItem.Price);
-
             ClearCell();
         }
     }

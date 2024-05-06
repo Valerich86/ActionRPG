@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.Progress;
 
-public enum ItemAction { Use, Sell};
-public enum ItemAssignment { Equipment, Loot, Money }
-public enum ItemType { Weapon, Armor, Shield, Ability, Food, Cure, Key, ForSale, Other }
+public enum ItemAssignment { Equipment, Loot, Money, SetOfArrows }
+public enum ItemType { Weapon, Armor, Shield, Quiver, Ability, Cure, Key, ForSale, Other }
 public class InventoryController : MonoBehaviour
 {
 
@@ -14,14 +15,15 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] _descriptions;
     [SerializeField] private TextMeshProUGUI _moneyCounter;
     [SerializeField] private GameObject _arrow;
-    [HideInInspector] public int ArrowAmount { get; private set; }
+    [HideInInspector] public int ArrowAmount { get; private set; } = 20;
+    [HideInInspector] public int MaxArrowAmount { get; private set; } = 20;
 
     private PlayerController _playerController;
     private int _lootsAmount = 0;
     private int _currentMoney;
     private bool _isStartItemPicked = false;
     private bool _isStartItemEquiped = false;
-
+    private Dictionary<ItemSO, int> _pickedItems = new Dictionary<ItemSO, int>();
 
     public void Construct(PlayerController player, int startMoney)
     {
@@ -40,14 +42,28 @@ public class InventoryController : MonoBehaviour
     private void Update()
     {
         _moneyCounter.text = _currentMoney.ToString();
-        _arrow.GetComponentInChildren<TextMeshProUGUI>().text = ArrowAmount.ToString();
+        _arrow.GetComponentInChildren<TextMeshProUGUI>().text = $"{ArrowAmount} / {MaxArrowAmount}";
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    while (_pickedItems.Count > 0)
+        //    {
+        //        foreach (var cell in _lootCells)
+        //        {
+        //            if (cell.IsEmpty) continue;
+        //            cell.ClearCell();
+        //            SetMoney(cell.CurrentItem.Price);
+        //        }
+        //    }
+        //}
     }
 
     public void SetCurrentArrowAmount(int amount)
     {
         ArrowAmount += amount;
+        if (ArrowAmount > MaxArrowAmount) ArrowAmount = MaxArrowAmount;
         _playerController.GetComponent<AttackController>().SetCurrentArrowsAmount(ArrowAmount);
     }
+
 
     private void ClearDescriptions()
     {
@@ -64,7 +80,7 @@ public class InventoryController : MonoBehaviour
         _descriptions[2].text = $"Стоимость : {item.Price}";
     }
 
-    void SetLoot(ItemSO item)
+    private void SetLoot(ItemSO item)
     {
         foreach (var cell in _lootCells)
         {
@@ -74,7 +90,6 @@ public class InventoryController : MonoBehaviour
                 return;
             }
         }
-
         foreach (var cell in _lootCells)
         {
             if (cell.IsEmpty)
@@ -86,6 +101,48 @@ public class InventoryController : MonoBehaviour
         }
     }
 
+    public void UpdateList()
+    {
+        _pickedItems.Clear();
+        foreach (var cell in _lootCells)
+        {
+            if (!cell.IsEmpty)
+            {
+                try
+                {
+                    _pickedItems.Add(cell.CurrentItem, cell.Amount);
+                }
+                catch (Exception)
+                {
+                    _pickedItems[cell.CurrentItem] += 1;
+                }
+            }
+        }
+        foreach (var cell in _equipCells)
+        {
+            if (!cell.IsEmpty)
+            {
+                try
+                {
+                    _pickedItems.Add(cell.CurrentItem, 1);
+                }
+                catch (Exception)
+                {
+                    _pickedItems[cell.CurrentItem] += 1;
+                }
+            }
+        }
+        Debug.Log(_pickedItems.Count);
+    } 
+
+    public void ChangeStatus(bool canUse)
+    {
+        foreach (var cell in _lootCells)
+        {
+            if (cell.IsEmpty) continue;
+            cell.CanUse = canUse;
+        }
+    }
 
     private void CheckCell(ItemController item)
     {
@@ -103,7 +160,7 @@ public class InventoryController : MonoBehaviour
         }
         if (_lootsAmount < _lootCells.Length)
         {
-            StaticData.OnHintChanged?.Invoke($"Вы подобрали предмет '{item.ItemSO.Tytle}'");
+            StaticData.OnHintChanged?.Invoke($"Вы приобрели предмет '{item.ItemSO.Tytle}'");
             Destroy(item.gameObject);
             SetLoot(item.ItemSO);
         }
@@ -126,24 +183,75 @@ public class InventoryController : MonoBehaviour
             SetLoot(currentItem);
         }
         else _equipCells[0].SetItem(weapon);
+        _playerController.gameObject.GetComponent<AttackController>().SetPlayerWeapon(weapon);
         if (weapon.WeaponSO.Type == AttackType.long_range)
         {
             _arrow.SetActive(true);
-            SetCurrentArrowAmount(weapon.WeaponSO.StartArrowAmount);
+            _playerController.gameObject.GetComponent<AttackController>().SetCurrentArrowsAmount(ArrowAmount);
         }
-        _playerController.gameObject.GetComponent<AttackController>().SetPlayerWeapon(weapon);
+    }
+
+    public void SetShield(ItemSO shield)
+    {
+        ItemSO currentItem;
+        if (!_equipCells[1].IsEmpty)
+        {
+            currentItem = _equipCells[1].CurrentItem;
+            _equipCells[1].SetItem(shield);
+            SetLoot(currentItem);
+        }
+        else _equipCells[1].SetItem(shield);
+        _playerController.gameObject.GetComponent<AttackController>().SetPlayerShield(shield);
+    }
+
+    public void SetHelmet(ItemSO helmet)
+    {
+        ItemSO currentItem;
+        if (!_equipCells[2].IsEmpty)
+        {
+            currentItem = _equipCells[2].CurrentItem;
+            _equipCells[2].SetItem(helmet);
+            SetLoot(currentItem);
+        }
+        else _equipCells[2].SetItem(helmet);
+        _playerController.gameObject.GetComponent<AttackController>().SetPlayerHelmet(helmet);
+    }
+
+    public void SetQuiver(ItemSO quiver)
+    {
+        ItemSO currentItem;
+        if (!_equipCells[3].IsEmpty)
+        {
+            currentItem = _equipCells[3].CurrentItem;
+            _equipCells[3].SetItem(quiver);
+            SetLoot(currentItem);
+        }
+        else _equipCells[3].SetItem(quiver);
+        MaxArrowAmount *= 2;
+        _playerController.gameObject.GetComponent<AttackController>().SetPlayerQuiver(quiver);
     }
 
     private void SetMoney(int money) => _currentMoney += money;
-    private void SetShield(ItemSO itemSO)
-    {
-        throw new NotImplementedException();
-    }
-
+   
     private IEnumerator ShowSomeHint(string hint, float time)
     {
         yield return new WaitForSeconds(time);
         StaticData.OnGlobalHintChanged?.Invoke(hint, 10);
+    }
+
+    public void PurchaseItem(ItemController item)
+    {
+        if (item.ItemSO.Price > _currentMoney)
+        {
+            StaticData.OnHintChanged("Недостаточно денег");
+            return;
+        }
+        else
+        {
+            SetMoney(- item.ItemSO.Price);
+            CheckCell(item);
+            UpdateList();
+        }
     }
 
     private void OnDisable()

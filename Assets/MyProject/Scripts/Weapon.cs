@@ -18,4 +18,10 @@ public class Weapon : ScriptableObject
     public GameObject ArrowClone;
     public float BowShotForce;
     public int StartArrowAmount;
+
+    [Header("")]
+    [Header("For 'CombatAxe' only:")]
+    public GameObject AxeClone;
+    public float ForceZ = 200;
+    public float ForceY = 50;
 }

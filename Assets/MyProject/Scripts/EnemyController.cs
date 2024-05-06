@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour, IMortal
 {
     [field: SerializeField] public EnemySO Enemy { get; private set; }
+    [field: SerializeField] public GameObject Weapon { get; private set; }
 
     private AttackController _attackController;
     private HPController _hpController;
@@ -49,7 +50,7 @@ public class EnemyController : MonoBehaviour, IMortal
                 _isSearching = false;  
                 _agent.SetDestination(_player.position);
                 transform.LookAt(_player.position);
-                if (Enemy.Defense == DefenseType.CanRoll && distance <= Enemy.MeleeAttackDistance + 2f && distance >= Enemy.MeleeAttackDistance + 1.8f)
+                if (Enemy.Defense == DefenseType.Default && distance <= Enemy.MeleeAttackDistance + 2f && distance >= Enemy.MeleeAttackDistance + 1.8f)
                 {
                     _animator.SetTrigger("RollForward");
                     _agent.speed = _maxSpeed;

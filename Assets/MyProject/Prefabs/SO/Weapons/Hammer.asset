@@ -18,3 +18,7 @@ MonoBehaviour:
   <MeleeRange>k__BackingField: 2.5
   ArrowClone: {fileID: 0}
   BowShotForce: 0
+  StartArrowAmount: 0
+  AxeClone: {fileID: 0}
+  ForceZ: 0
+  ForceY: 0

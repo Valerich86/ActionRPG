@@ -10,7 +10,7 @@ public interface IMortal
     public void Dying();
 }
 
-public enum DefenseType { CanRoll, CanBlock}
+public enum DefenseType { Default, Shield}
 
 public class PlayerController : MonoBehaviour, IMortal
 {
@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour, IMortal
     private HPController _hpController;
     private Animator _animator;
     private AttackController _attackController;
+    private DefenseType _defenceType;
     private float _jumpForce = 0;
     private bool _isDead = false;
     private bool _canMove = false;
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour, IMortal
         _attackController = gameObject.GetComponent<AttackController>();
         _hpController = gameObject.GetComponent<HPController>();
         _hpController.SetStartHealth(StaticData.PlayerRole.MaxHP);
+        _defenceType = DefenseType.Default;
         StartCoroutine(OnStart());
     }
 
@@ -54,21 +56,23 @@ public class PlayerController : MonoBehaviour, IMortal
         }
     }
 
+    public void ChangeDefenceType(DefenseType type) => _defenceType = type;
+
     private void Defense()
     {
-        if (Input.GetKeyDown(KeyCode.E) && StaticData.PlayerRole.Defense == DefenseType.CanBlock)
+        if (Input.GetKeyDown(KeyCode.E) && _defenceType == DefenseType.Shield)
         {
             _hpController.SetBlock();
         }
-        else if (Input.GetKeyUp(KeyCode.E) && StaticData.PlayerRole.Defense == DefenseType.CanBlock)
+        else if (Input.GetKeyUp(KeyCode.E) && _defenceType == DefenseType.Shield)
         {
             _hpController.ResetBlock();
         }
-        if ((Input.GetKey(KeyCode.W)) && Input.GetKeyDown(KeyCode.E) && StaticData.PlayerRole.Defense == DefenseType.CanRoll)
+        if ((Input.GetKey(KeyCode.W)) && Input.GetKeyDown(KeyCode.E) && _defenceType == DefenseType.Default)
         {
             _animator.SetTrigger("RollForward");
         }
-        if ((Input.GetKey(KeyCode.S)) && Input.GetKeyDown(KeyCode.Q) && StaticData.PlayerRole.Defense == DefenseType.CanRoll)
+        if ((Input.GetKey(KeyCode.S)) && Input.GetKeyDown(KeyCode.Q))
         {
             _animator.SetTrigger("RollBack");
         }
@@ -91,6 +95,7 @@ public class PlayerController : MonoBehaviour, IMortal
     void Attack()
     {
         if (Input.GetMouseButtonDown(0) && !_isDead) _attackController.Attack();
+        if (Input.GetMouseButtonDown(1) && !_isDead) _attackController.AlternativeAttack(); 
     }
 
 

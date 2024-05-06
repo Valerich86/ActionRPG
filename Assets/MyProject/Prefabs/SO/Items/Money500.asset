@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Tytle>k__BackingField: "500 \u043C\u043E\u043D\u0435\u0442"
   <Assignment>k__BackingField: 2
-  <Type>k__BackingField: 8
+  <Type>k__BackingField: 9
   <Clone>k__BackingField: {fileID: 1007021488633790801, guid: 5d2db640c8936424fae1858b277a7ab2,
     type: 3}
   <Icon>k__BackingField: {fileID: 0}

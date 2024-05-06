@@ -11,7 +11,6 @@ public class HudController : MonoBehaviour
     [SerializeField] private Canvas _inventoryWindow;
     [SerializeField] private TextMeshProUGUI _hint;
     [SerializeField] private TextMeshProUGUI _globalHint;
-    
 
     private HPController _hpController;
     private float _experience = 0;
@@ -19,7 +18,7 @@ public class HudController : MonoBehaviour
 
     public void Construct(HPController hp)
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         _inventoryWindow.enabled = false;
         _hpController = hp;
         _hpController.OnHealthChanged += OnHealthChanged;
@@ -37,15 +36,17 @@ public class HudController : MonoBehaviour
         {
             if (!_inventoryWindow.enabled)
             {
-                Cursor.lockState = CursorLockMode.None;
+                //Cursor.lockState = CursorLockMode.None;
                 _inventoryWindow.enabled = true;
                 Time.timeScale = 0;
+                StaticData.DeactivateSaleWindow?.Invoke(false);
             }
             else
             {
-                Cursor.lockState = CursorLockMode.Locked;
+                //Cursor.lockState = CursorLockMode.Locked;
                 _inventoryWindow.enabled = false;
                 Time.timeScale = 1;
+                StaticData.DeactivateSaleWindow?.Invoke(true);
             }
         }
         _expBar.fillAmount = _experience / 1000;
@@ -71,6 +72,7 @@ public class HudController : MonoBehaviour
         _hint.text = hint;
         Invoke("ClearHint", 3f);
     }
+
 
     public void ClearHint() => _hint.text = string.Empty;
 

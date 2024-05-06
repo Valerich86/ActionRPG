@@ -25,6 +25,6 @@ MonoBehaviour:
     \u043D\u043E \u0412\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u0441\u043E\u0431\u0438\u0440\u0430\u0442\u044C
     \u0443\u0436\u0435 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u043D\u044B\u0435
     \u0441\u0442\u0440\u0435\u043B\u044B"
-  <Price>k__BackingField: 15000
+  <Price>k__BackingField: 11000
   HealPercents: 0
   WeaponSO: {fileID: 11400000, guid: fc947470f60bca142adb5017f4a30b33, type: 2}

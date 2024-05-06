@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a9594ae3fcc8c418e816a2ad8e7f9f, type: 3}
   m_Name: Blacksmith
   m_EditorClassIdentifier: 
+  <Type>k__BackingField: 2
   <Clone>k__BackingField: {fileID: 6257153774633877010, guid: 92b1167b824b0d946b43a8e2cc748dec,
     type: 3}
   <Icon>k__BackingField: {fileID: 21300000, guid: 30e5941e5a20db4478de35e512eed1f4,
     type: 3}
   <Speed>k__BackingField: 4
-  <RotationSpeed>k__BackingField: 150
+  <RotationSpeed>k__BackingField: 100
   <MaxJumpForce>k__BackingField: 1
   <Weapon>k__BackingField: {fileID: 11400000, guid: c69ba8450fd94e548ba107bde9c90e7b,
     type: 2}
   <MaxHP>k__BackingField: 400
   <StartMoney>k__BackingField: 1000
-  Defense: 1
-  Shield: {fileID: 0}
+  Shield: {fileID: 11400000, guid: 84648f70e8a49c147b941ebbb21f9da2, type: 2}

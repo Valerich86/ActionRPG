@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Tytle>k__BackingField: "\u041B\u0435\u043A\u0430\u0440\u0441\u0442\u0432\u043E
     \u0441\u0440\u0435\u0434\u043D\u0435\u0433\u043E \u0443\u0440\u043E\u0432\u043D\u044F"
-  <Placement>k__BackingField: 1
-  <Type>k__BackingField: 5
+  <Assignment>k__BackingField: 1
+  <Type>k__BackingField: 6
   <Clone>k__BackingField: {fileID: 392489427087728442, guid: e8300462cc969dc4c82430a0eab04fbd,
     type: 3}
   <Icon>k__BackingField: {fileID: 21300000, guid: 59a59fa379e425f49bac2da31f753f54,
@@ -24,3 +24,4 @@ MonoBehaviour:
     \u043F\u043E\u043B\u043E\u0432\u0438\u043D\u0443 \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F"
   <Price>k__BackingField: 500
   HealPercents: 50
+  WeaponSO: {fileID: 0}

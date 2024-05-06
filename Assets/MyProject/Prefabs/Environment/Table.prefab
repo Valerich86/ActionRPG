@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2642457763899865181}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.89326733, z: -0, w: 0.44952583}
+  m_LocalRotation: {x: 0, y: 0.8932655, z: 0, w: 0.44952956}
   m_LocalPosition: {x: -3.67, y: -4.325704, z: 2.9}
   m_LocalScale: {x: 0.33333328, y: 0.33333334, z: 0.33333328}
   m_ConstrainProportionsScale: 0
@@ -55,7 +55,7 @@ Transform:
   - {fileID: 6752596343249983070}
   - {fileID: 5912889041179891348}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 126.573, z: 0}
 --- !u!1001 &638407658537739381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1745,6 +1745,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fire
       objectReference: {fileID: 0}
+    - target: {fileID: 6088102990811815701, guid: 0aa93acfaad9bc74287c377b957dc0dc,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2423,6 +2428,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wineglass_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880207639062502002, guid: 675b3bbef6ce0924784ad185c6118c34,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3221020666201342152, guid: 675b3bbef6ce0924784ad185c6118c34,
         type: 3}
