@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4b17536f60a43f40bc2add9331e0e86, type: 3}
   m_Name: HammerItem
   m_EditorClassIdentifier: 
+  <ID>k__BackingField: 9
   <Tytle>k__BackingField: "\u041C\u043E\u043B\u043E\u0442"
   <Assignment>k__BackingField: 0
   <Type>k__BackingField: 0

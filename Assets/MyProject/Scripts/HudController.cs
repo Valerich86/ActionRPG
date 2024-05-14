@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -6,27 +7,44 @@ using UnityEngine.UI;
 public class HudController : MonoBehaviour
 {
     [SerializeField] private Image _healthbar;
+    [SerializeField] private Image _abilityBar;
     [SerializeField] private Image _expBar;
     [SerializeField] private Image _icon;
     [SerializeField] private Canvas _inventoryWindow;
     [SerializeField] private TextMeshProUGUI _hint;
     [SerializeField] private TextMeshProUGUI _globalHint;
+    [SerializeField] private TextMeshProUGUI _abilityText;
+    [SerializeField] private TextMeshProUGUI _expText;
+    [SerializeField] private TextMeshProUGUI _hpText;
 
+    private GameManager _gameManager;
     private HPController _hpController;
-    private float _experience = 0;
+    private float _maxExperience;
+    private float _maxAbility = 50;
+    private float _minAbility = 30;
+    private float _experience;
+    private float _ability;
+    private int _level;
 
-
-    public void Construct(HPController hp)
+    public void Construct(HPController hp, Sprite icon)
     {
-        //Cursor.lockState = CursorLockMode.Locked;
+        _gameManager = GameManager.Instance;
         _inventoryWindow.enabled = false;
         _hpController = hp;
         _hpController.OnHealthChanged += OnHealthChanged;
         StaticData.OnHintChanged += SetHint;
         StaticData.OnGlobalHintChanged += SetGlobalHint;
         StaticData.OnEnemyDying += OnExpChanged;
-        _icon.sprite = StaticData.PlayerRole.Icon;
+        StaticData.OnSuperStrikeApplied += ResetAbility;
+        SetHint(String.Empty);
+        SetGlobalHint(string.Empty, 1);
+        _icon.sprite = icon;
         _expBar.fillAmount = 0;
+        _abilityBar.fillAmount = 0;
+        _level = _gameManager.CurrentLevel;
+        _experience = _gameManager.CurrentExperience;
+        _maxExperience = _gameManager.MaxExperience;
+        _expText.text = "Опыт : уровень " + _level;
     }
 
 
@@ -36,30 +54,61 @@ public class HudController : MonoBehaviour
         {
             if (!_inventoryWindow.enabled)
             {
-                //Cursor.lockState = CursorLockMode.None;
                 _inventoryWindow.enabled = true;
                 Time.timeScale = 0;
                 StaticData.DeactivateSaleWindow?.Invoke(false);
             }
             else
             {
-                //Cursor.lockState = CursorLockMode.Locked;
                 _inventoryWindow.enabled = false;
                 Time.timeScale = 1;
                 StaticData.DeactivateSaleWindow?.Invoke(true);
             }
         }
-        _expBar.fillAmount = _experience / 1000;
+        
+        if (_ability < _maxAbility)
+        {
+            _ability += Time.deltaTime;
+            _abilityText.text = "Суперспособность";
+        }
+        else
+        {
+            _ability = _maxAbility;
+            _abilityText.text = "' Q ' - активировать";
+            FindObjectOfType<PlayerController>().ApplySS(true);
+        } 
+        _abilityBar.fillAmount = _ability / _maxAbility;
     }
 
-    private void OnHealthChanged(HPController health) => _healthbar.fillAmount = health.CurrentHP / health.MaxHP;
+    private void ResetAbility() => _ability = 0;
 
+    private void OnHealthChanged(HPController health)
+    {
+        _healthbar.fillAmount = health.CurrentHP / health.MaxHP;
+        _gameManager.SetCurrenrHP(health.CurrentHP, health.MaxHP);
+    }
     private void OnExpChanged(EnemyController enemy)
     {
         _experience += enemy.Enemy.Exp;
         SetGlobalHint($"+ {enemy.Enemy.Exp} опыта !", 3);
+        _expBar.fillAmount = _experience / _maxExperience;
+        if (_experience >= _maxExperience) LevelUp();
+        _expText.text = "Опыт : уровень " + _level;
+        _gameManager.SetCurrentExperience(_experience, _maxExperience);
     }
 
+
+    private void LevelUp()
+    {
+        _experience = 0;
+        _level++;
+        _maxExperience = _level * 500;
+        _maxAbility = 60 - _level * 10;
+        if (_maxAbility <= _minAbility) _maxAbility = _minAbility;
+        if (_level > 1) _hpController.ChangeMaxHP(_level * 20);
+        _gameManager.SetCurrentLevel(_level);
+        _gameManager.SetCurrentExperience(_experience, _maxExperience);
+    }
 
     public void SetGlobalHint(string hint, int time)
     {
@@ -84,5 +133,6 @@ public class HudController : MonoBehaviour
         StaticData.OnGlobalHintChanged -= SetGlobalHint;
         _hpController.OnHealthChanged -= OnHealthChanged;
         StaticData.OnEnemyDying -= OnExpChanged;
+        StaticData.OnSuperStrikeApplied -= ResetAbility;
     }
 }

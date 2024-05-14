@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: CombatAxe
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 2
-  <Damage>k__BackingField: 20
+  <Damage>k__BackingField: 30
   <Cooldown>k__BackingField: 1.8
   <MeleeRange>k__BackingField: 1.7
-  ArrowClone: {fileID: 0}
+  PlayerArrowClone: {fileID: 0}
+  EnemyArrowClone: {fileID: 0}
   BowShotForce: 0
   StartArrowAmount: 0
   AxeClone: {fileID: 4157170367115568931, guid: 750dc456ad4b79444a1e980d1604b88f,
     type: 3}
-  ForceZ: 150
+  ForceZ: 100
   ForceY: 50

@@ -3,12 +3,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEditor.Progress;
 
 public class LevelController : MonoBehaviour
 {
     [SerializeField] private Camera _caveCamera;
+    [SerializeField] private Canvas _gameOver;    
     [SerializeField] private CinemachineVirtualCamera _mainCamera;
+    [SerializeField] private CinemachineVirtualCamera _noiseCamera;
     [SerializeField] private HudController _hud;
     [SerializeField] private InventoryController _inventory;
     [SerializeField] private Transform _playerSpawnPosition;
@@ -27,15 +30,42 @@ public class LevelController : MonoBehaviour
 
     private PlayerController _player;
     private GameObject _item;
+    private GameManager _gameManager;
     void Awake()
     {
-        //Cursor.lockState = CursorLockMode.Locked;
-        ChangeCameraPriority(1);
+        _gameManager = GameManager.Instance;
+        _gameOver.enabled = false;
+        ChangeCameraPriority(1, 0);
         StaticData.OnEnemyDying += SpawnReward;
         StaticData.OnCameraChanged += ChangeCameraPriority;
-        StartCoroutine(LevelStart());
+        if (SaveService.IsLoading == true)
+        {
+            SpawnItems();
+            _player = Instantiate(_gameManager.CurrentRole.Clone, SaveService.StartPosition(), Quaternion.identity).GetComponent<PlayerController>();
+            _caveCamera.gameObject.SetActive(false);
+            ActivateCamera();
+            StaticData.OnPlayerDying += EnableGameOver;
+            _hud.Construct(_player.GetComponent<HPController>(), _gameManager.CurrentRole.Icon);
+            _inventory.Construct(_player);
+            _hud.gameObject.SetActive(true);
+            _inventory.gameObject.SetActive(true);
+            //_inventory.SetInventory();
+            //_inventory.PutOn();
+            StartCoroutine(SpawnEnemies());
+        } 
+        else StartCoroutine(LevelStart());
     }
 
+    private void EnableGameOver()
+    {
+        _gameOver.enabled = true;
+        Invoke("RestartGame", 3f);
+    }
+
+    private void RestartGame()
+    {
+        SceneManager.LoadScene(0);
+    }
     private IEnumerator LevelStart()
     {
         SpawnItems();
@@ -46,42 +76,51 @@ public class LevelController : MonoBehaviour
         yield return new WaitForSeconds(2);
         SpawnPlayerCharacter();
         yield return new WaitForSeconds(5);
-        _hud.Construct(_player.GetComponent<HPController>());
-        _inventory.Construct(_player, StaticData.PlayerRole.StartMoney);
+        _hud.Construct(_player.GetComponent<HPController>(), _gameManager.CurrentRole.Icon);
+        _inventory.Construct(_player);
+        StaticData.OnHintChanged?.Invoke("Безопасная зона : кристальное ущелье");
         yield return new WaitForSeconds(5);
         _hud.gameObject.SetActive(true);
+        _inventory.gameObject.SetActive(true);
+        _inventory.SetInventory();
+        _inventory.PutOn();
         StaticData.OnGlobalHintChanged?.Invoke("Как всегда, мягкая посадка...", 5);
         ActivateCamera();
         yield return new WaitForSeconds(3);
-        SpawnPlayerItems();
-        StaticData.OnGlobalHintChanged?.Invoke("А вот и мои вещи!", 5);
         _caveCamera.gameObject.SetActive(false);
-        SpawnEnemies();
+        StartCoroutine(SpawnEnemies());
     }
 
     void ActivateCamera()
     {
         _mainCamera.Follow = _player.transform;
         _mainCamera.LookAt = _player.transform;
-        ChangeCameraPriority(10);
+        _noiseCamera.Follow = _player.transform;
+        _noiseCamera.LookAt = _player.transform;
+        ChangeCameraPriority(10, 0);
     }
 
-    void ChangeCameraPriority(int priority) => _mainCamera.Priority = priority;
+    void ChangeCameraPriority(int mainCam_priority, int noiseCam_priority)
+    {
+        _mainCamera.Priority = mainCam_priority;
+        _noiseCamera.Priority = noiseCam_priority;
+    }
 
     void SpawnTeleport()
     {
         GameObject teleport = Instantiate(_teleportClone, _teleportSpawnPosition.position, Quaternion.identity);
-        Destroy(teleport, 300);
+        Destroy(teleport, 30);
     }
 
     void SpawnLightnings()
     {
         GameObject lightnings = Instantiate(_lightningsClone, _teleportSpawnPosition);
-        Destroy(lightnings, 300);
+        Destroy(lightnings, 30);
     }
     void SpawnPlayerCharacter()
     {
-        _player = Instantiate(StaticData.PlayerRole.Clone, _playerSpawnPosition.position, _playerSpawnPosition.rotation).GetComponent<PlayerController>();
+        _player = Instantiate(_gameManager.CurrentRole.Clone, _playerSpawnPosition.position, _playerSpawnPosition.rotation).GetComponent<PlayerController>();
+        StaticData.OnPlayerDying += EnableGameOver;
     }
 
     void SpawnItems()
@@ -100,26 +139,18 @@ public class LevelController : MonoBehaviour
         }
     }
 
-
-    private void SpawnPlayerItems()
+    IEnumerator SpawnEnemies()
     {
-        GameObject PlItem1 = Instantiate(StaticData.PlayerRole.Weapon.Clone, _weaponSpawnPosition.position, Quaternion.identity);
-        Instantiate(_strongShiningFX, PlItem1.transform);
-        if (StaticData.PlayerRole.Type == RoleType.Blacksmith)
+        while (true)
         {
-            GameObject PlItem2 = Instantiate(StaticData.PlayerRole.Shield.Clone, _weaponSpawnPosition.position, Quaternion.identity);
-            Instantiate(_strongShiningFX, PlItem2.transform);
-        }
-    }
-
-    void SpawnEnemies()
-    {
-        foreach (var enemy in _enemies)
-        {
-            for (int i = 0; i < enemy.SpawnPoints.Length; i++)
+            foreach (var enemy in _enemies)
             {
-                Instantiate(enemy.EnemyType.Clone, enemy.SpawnPoints[i].position, Quaternion.identity);
+                for (int i = 0; i < enemy.SpawnPoints.Length; i++)
+                {
+                    Instantiate(enemy.EnemyType.Clone, enemy.SpawnPoints[i].position, Quaternion.identity);
+                }
             }
+            yield return new WaitForSeconds(300);
         }
     }
 
@@ -142,7 +173,7 @@ public class LevelController : MonoBehaviour
             default: return;
         }
         Instantiate(_strongShiningFX, money.transform);
-        money.GetComponent<Rigidbody>().AddForce(Vector3.up * 10, ForceMode.Impulse);
+        money.GetComponent<Rigidbody>().AddForce(Vector3.up * 20, ForceMode.Impulse);
         Instantiate(_strongShiningFX, enemy.Weapon.transform);
         Rigidbody rb = enemy.Weapon.AddComponent<Rigidbody>();
         rb.mass = 10;
@@ -153,6 +184,7 @@ public class LevelController : MonoBehaviour
     {
         StaticData.OnEnemyDying -= SpawnReward;
         StaticData.OnCameraChanged -= ChangeCameraPriority;
+        StaticData.OnPlayerDying -= EnableGameOver;
     }
 
 

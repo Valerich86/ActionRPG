@@ -13,10 +13,15 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 1
-  <Damage>k__BackingField: 15
+  <Damage>k__BackingField: 20
   <Cooldown>k__BackingField: 1.5
   <MeleeRange>k__BackingField: 0
-  ArrowClone: {fileID: 8619474437445739543, guid: b3f74f4dc2fedac40bc0a500638d80f9,
+  PlayerArrowClone: {fileID: 8619474437445739543, guid: b3f74f4dc2fedac40bc0a500638d80f9,
+    type: 3}
+  EnemyArrowClone: {fileID: 8619474437445739543, guid: 2560f3b60f410a744a0309663e4170c1,
     type: 3}
   BowShotForce: 50
   StartArrowAmount: 20
+  AxeClone: {fileID: 0}
+  ForceZ: 0
+  ForceY: 0

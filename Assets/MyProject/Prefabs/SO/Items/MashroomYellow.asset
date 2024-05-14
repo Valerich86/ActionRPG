@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4b17536f60a43f40bc2add9331e0e86, type: 3}
   m_Name: MashroomYellow
   m_EditorClassIdentifier: 
+  <ID>k__BackingField: 12
   <Tytle>k__BackingField: "\u0416\u0435\u043B\u0442\u044B\u0439 \u0433\u0440\u0438\u0431"
   <Assignment>k__BackingField: 1
   <Type>k__BackingField: 7

@@ -15,7 +15,9 @@ public class Role : ScriptableObject
     [field: SerializeField] public float MaxJumpForce { get; private set; }
     [field: SerializeField] public ItemSO Weapon { get; private set; }
     [field: SerializeField] public float MaxHP { get; private set; }
-    [field: SerializeField] public int StartMoney { get; private set; }
+    [field: SerializeField] public int SuperStrikeDuration { get; private set; }
+    [field: SerializeField] public float SuperStrikeOneHitDamage { get; private set; }
+    [field: SerializeField] public int SuperStrikeRange { get; private set; }
 
     [Header("")]
     [Header("For 'Blacksmith' only:")]

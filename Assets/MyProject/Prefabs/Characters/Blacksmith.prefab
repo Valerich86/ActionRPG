@@ -2988,6 +2988,37 @@ Transform:
   - {fileID: 6315189049906921776}
   m_Father: {fileID: 7401689656156414148}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5082298023922541695
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4754435883855297783}
+  m_Layer: 7
+  m_Name: SSPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4754435883855297783
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5082298023922541695}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 1, z: 0.07637921}
+  m_LocalScale: {x: 0.58823526, y: 0.8333333, z: 0.58823526}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6963996124387420426}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &5133939726801193261
 GameObject:
   m_ObjectHideFlags: 0
@@ -3590,6 +3621,7 @@ Transform:
   - {fileID: 7459517349854489077}
   - {fileID: 9108750854378101358}
   - {fileID: 5091232889682668626}
+  - {fileID: 4754435883855297783}
   - {fileID: 2666814214764680575}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3657,7 +3689,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.4
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -3692,6 +3724,9 @@ MonoBehaviour:
     m_Bits: 8
   _arrowPoint: {fileID: 2666814214764680575}
   _axePoint: {fileID: 9108750854378101358}
+  _superStrikePoint: {fileID: 4754435883855297783}
+  _strikeVFX: {fileID: 995976567181308104, guid: 674a87f5d1a4b6d4581f56a9dd682f0c,
+    type: 3}
 --- !u!114 &2009977671765097345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3704,7 +3739,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee176863c7f9f6c4ea9c09fcf039ac65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DamagePoints: []
+  DamagePoints:
+  - {fileID: 8477941808315667755}
+  - {fileID: 498219687607704744}
+  - {fileID: 8414192012276456871}
+  - {fileID: 7689929297163122406}
+  - {fileID: 4072469399275096112}
   _bloodClone: {fileID: 1600766774483431791, guid: 207b8a466c391e3489832fb7a327b930,
     type: 3}
   _bloodClone2: {fileID: 1600766774483431791, guid: cd7def8df024a0f429d8da5abeb107f5,

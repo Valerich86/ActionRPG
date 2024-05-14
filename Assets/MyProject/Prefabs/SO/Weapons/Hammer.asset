@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Hammer
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 0
-  <Damage>k__BackingField: 30
+  <Damage>k__BackingField: 40
   <Cooldown>k__BackingField: 3
   <MeleeRange>k__BackingField: 2.5
-  ArrowClone: {fileID: 0}
+  PlayerArrowClone: {fileID: 0}
+  EnemyArrowClone: {fileID: 0}
   BowShotForce: 0
   StartArrowAmount: 0
   AxeClone: {fileID: 0}

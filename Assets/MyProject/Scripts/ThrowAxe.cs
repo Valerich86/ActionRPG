@@ -23,7 +23,7 @@ public class ThrowAxe : MonoBehaviour
             PlayerController player = FindObjectOfType<PlayerController>();
             Vector3 finalPosition = FindObjectOfType<WeaponHand>().transform.position; 
             transform.position = Vector3.Lerp(transform.position, finalPosition, _smooth * Time.deltaTime);
-            transform.Rotate(-100, -0, 0);
+            transform.Rotate(-100, 0, 0);
             if (Vector3.Distance(transform.position, finalPosition) < 3 && !_closeToPlayer)
             {
                 _closeToPlayer = true;
@@ -36,7 +36,7 @@ public class ThrowAxe : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         _flyingForward = false;
-        _rigidbody.isKinematic = true;
+        //_rigidbody.isKinematic = true;
         if (collision.gameObject.TryGetComponent<EnemyController>(out EnemyController enemy))
             enemy.GetComponent<HPController>().TakeDamage(_damage);
         MoveBack();

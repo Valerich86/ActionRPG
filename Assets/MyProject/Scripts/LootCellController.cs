@@ -18,9 +18,11 @@ public class LootCellController : MonoBehaviour, IPointerEnterHandler, IPointerE
     private Image _image;
     private TextMeshProUGUI _counter;
     private PlayerController _player;
+    private GameManager _gameManager;
 
     private void Start()
     {
+        _gameManager = GameManager.Instance;
         _image = GetComponent<Image>();
         _counter = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         _player = FindObjectOfType<PlayerController>();
@@ -40,26 +42,25 @@ public class LootCellController : MonoBehaviour, IPointerEnterHandler, IPointerE
             }
         }
     }
-    public void SetItem(ItemSO item)
+    public void SetItem(ItemSO item, int amount)
     {
         CurrentItem = item;
         IsEmpty = false;
         _image.sprite = CurrentItem.Icon;
-        Amount += 1;
+        Amount = amount;
         CanUse = true;
-        _inventory.UpdateList();
     }
 
     public void ClearCell()
     {
         Amount -= 1;
+        _gameManager.RemoveLoot(CurrentItem, Amount);
         if (Amount == 0)
         {
             CurrentItem = null;
             IsEmpty = true;
             _image.sprite = _startSprite;
         }
-        _inventory.UpdateList();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

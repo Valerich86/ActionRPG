@@ -746,6 +746,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterWindow: {fileID: 173666968}
   _startGame: {fileID: 1371416417}
+  _resume: {fileID: 1844722918}
+  _quit: {fileID: 1226402136}
   _roleButtons:
   - Role: {fileID: 11400000, guid: 17dcb34ee05342849bfa5ae51e9892b5, type: 2}
     Button: {fileID: 1771210827}
@@ -964,6 +966,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 972347333}
   m_CullTransparentMesh: 1
+--- !u!1 &1101142197
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1101142199}
+  - component: {fileID: 1101142198}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1101142198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101142197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 720a1afbec679ee4d9a88bc2f5917387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Roles:
+  - {fileID: 11400000, guid: 17dcb34ee05342849bfa5ae51e9892b5, type: 2}
+  - {fileID: 11400000, guid: 0bf59cbb16c19774e821b8bbf1c1916e, type: 2}
+  - {fileID: 11400000, guid: ceba9b14b4401124389ab1cded546a6c, type: 2}
+  Items:
+  - {fileID: 11400000, guid: 115ddca985d47ff44b2526819691400a, type: 2}
+  - {fileID: 11400000, guid: 5e443e141daa767429bff0ed79f28b0c, type: 2}
+  - {fileID: 11400000, guid: 411d752ed3bcf6e468dd09b0091eeb05, type: 2}
+  - {fileID: 11400000, guid: 1585fd52889693f468a773c3541e58c0, type: 2}
+  - {fileID: 11400000, guid: 82a783c82ee622a4bbfc4c7dd9d7295d, type: 2}
+  - {fileID: 11400000, guid: f8f5d0b4cb49bfe4a8a9285b39f98563, type: 2}
+  - {fileID: 11400000, guid: b4a0b5668694f0f488d3ec1261ef1152, type: 2}
+  - {fileID: 11400000, guid: 126cec89399167748b8692722892c981, type: 2}
+  - {fileID: 11400000, guid: c69ba8450fd94e548ba107bde9c90e7b, type: 2}
+  - {fileID: 11400000, guid: 3f87e72a0f0d3894cb78c73e4f8e6bd6, type: 2}
+  - {fileID: 11400000, guid: 16c8abd8c6bee074a9f7a6ee4bed1658, type: 2}
+  - {fileID: 11400000, guid: a80a76e9d2baf484cb1ad0e006e7cee1, type: 2}
+  - {fileID: 11400000, guid: 0bfbd6f7ad1cd1b4b8db9408e926a2f4, type: 2}
+  - {fileID: 11400000, guid: d5beee4915b8c0d4b92b691e618816bb, type: 2}
+  - {fileID: 11400000, guid: ee40b28bb2c78db49813578dd61d6904, type: 2}
+  - {fileID: 11400000, guid: 2760ebf4cad87e747944066b5e302c78, type: 2}
+  - {fileID: 11400000, guid: 5b86ccd9dab1f754eab997f5bfbffaef, type: 2}
+  - {fileID: 11400000, guid: 84648f70e8a49c147b941ebbb21f9da2, type: 2}
+  - {fileID: 11400000, guid: 04882a87532791a4dabb835ec41808c7, type: 2}
+--- !u!4 &1101142199
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101142197}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 966.702, y: 466.42917, z: -6.7084885}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1134911717
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,8 +1164,8 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.4784314, g: 0.4784314, b: 0.4784314, a: 1}
-    m_PressedColor: {r: 0.4784314, g: 0.4784314, b: 0.4784314, a: 1}
-    m_SelectedColor: {r: 0.4792453, g: 0.4792453, b: 0.4792453, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1350,8 +1420,8 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.4784314, g: 0.4784314, b: 0.4784314, a: 1}
-    m_PressedColor: {r: 0.4784314, g: 0.4784314, b: 0.4784314, a: 1}
-    m_SelectedColor: {r: 0.4792453, g: 0.4792453, b: 0.4792453, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2075,8 +2145,8 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.4784314, g: 0.4784314, b: 0.4784314, a: 1}
-    m_PressedColor: {r: 0.4784314, g: 0.4784314, b: 0.4784314, a: 1}
-    m_SelectedColor: {r: 0.4792453, g: 0.4792453, b: 0.4792453, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2502,3 +2572,4 @@ SceneRoots:
   - {fileID: 616187174}
   - {fileID: 639614360}
   - {fileID: 1134911720}
+  - {fileID: 1101142199}

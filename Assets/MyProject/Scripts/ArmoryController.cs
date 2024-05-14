@@ -49,7 +49,7 @@ public class ArmoryController : MonoBehaviour
         {
             _isPlayerIn = true;
             player.ResetMovement(false);
-            StaticData.OnCameraChanged?.Invoke(1);
+            StaticData.OnCameraChanged?.Invoke(1, 0);
             ChangePriority(8, 1);
             _animator.SetFloat("Speed", 0.1f);
             _agent.SetDestination(transform.position);
@@ -64,7 +64,6 @@ public class ArmoryController : MonoBehaviour
         if (other.TryGetComponent<PlayerController>(out PlayerController player))
         {
             _isPlayerIn = false;
-            StaticData.OnCameraChanged?.Invoke(10);
             _animator.SetFloat("Speed", 0.1f);
             _agent.SetDestination(_startPoint.position);
             _isOnPosition = false;
@@ -75,18 +74,16 @@ public class ArmoryController : MonoBehaviour
     {
         StaticData.OnGlobalHintChanged?.Invoke("Продаю то, что выковал сам и покупаю всё остальное", 3);
         yield return new WaitForSeconds(3);
-        //Cursor.lockState = CursorLockMode.None;
         StaticData.OnGlobalHintChanged?.Invoke("' ЛКМ ' по товару - посмотреть информацию \n' ЛКМ ' в инвентаре - продать 1 лут\n' R ' - продать весь лут\n' F ' - выход", 300);
         ChangePriority(1, 8);
     }
 
     private void ArmoryOut()
     {
-        //Cursor.lockState = CursorLockMode.Locked;
         _inventory.ChangeStatus(true);
         FindObjectOfType<PlayerController>().ResetMovement(true);
         StaticData.OnGlobalHintChanged?.Invoke(string.Empty, 0);
-        StaticData.OnCameraChanged?.Invoke(10);
+        StaticData.OnCameraChanged?.Invoke(10, 0);
     }
     private void ChangePriority(int cam1, int cam2)
     {

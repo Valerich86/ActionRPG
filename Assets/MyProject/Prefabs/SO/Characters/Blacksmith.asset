@@ -22,6 +22,9 @@ MonoBehaviour:
   <MaxJumpForce>k__BackingField: 1
   <Weapon>k__BackingField: {fileID: 11400000, guid: c69ba8450fd94e548ba107bde9c90e7b,
     type: 2}
-  <MaxHP>k__BackingField: 400
+  <MaxHP>k__BackingField: 500
   <StartMoney>k__BackingField: 1000
+  <SuperStrikeDuration>k__BackingField: 15
+  <SuperStrikeOneHitDamage>k__BackingField: 40
+  <SuperStrikeRange>k__BackingField: 20
   Shield: {fileID: 11400000, guid: 84648f70e8a49c147b941ebbb21f9da2, type: 2}

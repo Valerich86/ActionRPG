@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4b17536f60a43f40bc2add9331e0e86, type: 3}
   m_Name: Money1000
   m_EditorClassIdentifier: 
+  <ID>k__BackingField: 15
   <Tytle>k__BackingField: "1000 \u043C\u043E\u043D\u0435\u0442"
   <Assignment>k__BackingField: 2
   <Type>k__BackingField: 9

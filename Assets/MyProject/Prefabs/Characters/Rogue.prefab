@@ -11082,6 +11082,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0000011101365, y: 1.612778, z: 0.034707516}
     m_Extent: {x: 0.10220378, y: 0.2269525, z: 0.21792892}
   m_DirtyAABB: 0
+--- !u!1 &7633048416613940547
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2680103252789544599}
+  m_Layer: 0
+  m_Name: SSPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2680103252789544599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7633048416613940547}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3462444126356207691}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7724835379319570279
 GameObject:
   m_ObjectHideFlags: 0
@@ -11288,6 +11319,7 @@ Transform:
   - {fileID: 7858655829767268298}
   - {fileID: 6145746146374149452}
   - {fileID: 858672032116659051}
+  - {fileID: 2680103252789544599}
   - {fileID: 1195492413209733071}
   - {fileID: 2150465010167484055}
   m_Father: {fileID: 0}
@@ -11391,6 +11423,9 @@ MonoBehaviour:
     m_Bits: 8
   _arrowPoint: {fileID: 2150465010167484055}
   _axePoint: {fileID: 1195492413209733071}
+  _superStrikePoint: {fileID: 2680103252789544599}
+  _strikeVFX: {fileID: 2514601674390815565, guid: beb4f616237de7d4da06e446289477b2,
+    type: 3}
 --- !u!114 &5933689348840411814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11403,7 +11438,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee176863c7f9f6c4ea9c09fcf039ac65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DamagePoints: []
+  DamagePoints:
+  - {fileID: 8445252864087228494}
+  - {fileID: 6709533048211267098}
+  - {fileID: 80103756307248613}
+  - {fileID: 2571533165974922754}
+  - {fileID: 3182889236320656041}
   _bloodClone: {fileID: 1600766774483431791, guid: 207b8a466c391e3489832fb7a327b930,
     type: 3}
   _bloodClone2: {fileID: 1600766774483431791, guid: cd7def8df024a0f429d8da5abeb107f5,

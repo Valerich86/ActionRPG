@@ -14,8 +14,9 @@ public enum DefenseType { Default, Shield}
 
 public class PlayerController : MonoBehaviour, IMortal
 {
-    public event Action OnPlayerDying;
+    //public event Action OnPlayerDying;
 
+    private GameManager _gameManager;
     private CharacterController _controller;
     private HPController _hpController;
     private Animator _animator;
@@ -24,23 +25,26 @@ public class PlayerController : MonoBehaviour, IMortal
     private float _jumpForce = 0;
     private bool _isDead = false;
     private bool _canMove = false;
-
+    private bool _canApplySS = false;
 
     void Start()
     {
+        _gameManager = GameManager.Instance;
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
-        _attackController = gameObject.GetComponent<AttackController>();
-        _hpController = gameObject.GetComponent<HPController>();
-        _hpController.SetStartHealth(StaticData.PlayerRole.MaxHP);
+        _attackController = GetComponent<AttackController>();
+        _hpController = GetComponent<HPController>();
+        _hpController.SetStartHealth(_gameManager.CurrentHP, _gameManager.MaxHP);
         _defenceType = DefenseType.Default;
-        StartCoroutine(OnStart());
+        if (SaveService.IsLoading == false) StartCoroutine(OnStart());
+        else _canMove = true;
+        Time.timeScale = 1;
     }
 
     private IEnumerator OnStart()
     {
         _animator.Play("Die");
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(9);
         _animator.Play("Movement");
         _canMove = true;
     }
@@ -55,6 +59,8 @@ public class PlayerController : MonoBehaviour, IMortal
             Jump();
         }
     }
+
+    public void ApplySS(bool value) => _canApplySS = value;
 
     public void ChangeDefenceType(DefenseType type) => _defenceType = type;
 
@@ -84,10 +90,10 @@ public class PlayerController : MonoBehaviour, IMortal
         Vector3 direction = transform.TransformDirection(0, _jumpForce, vertical);
         if (!_isDead)
         {
-            if (Input.GetKey(KeyCode.A)) transform.Rotate(Vector3.up, -StaticData.PlayerRole.RotationSpeed * Time.deltaTime);
-            if (Input.GetKey(KeyCode.D)) transform.Rotate(Vector3.up, StaticData.PlayerRole.RotationSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.A)) transform.Rotate(Vector3.up, -_gameManager.CurrentRole.RotationSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.D)) transform.Rotate(Vector3.up, _gameManager.CurrentRole.RotationSpeed * Time.deltaTime);
 
-            _controller.Move(direction * StaticData.PlayerRole.Speed * Time.deltaTime);
+            _controller.Move(direction * _gameManager.CurrentRole.Speed * Time.deltaTime);
             _animator.SetFloat("Speed", vertical);
         }
     }
@@ -95,7 +101,12 @@ public class PlayerController : MonoBehaviour, IMortal
     void Attack()
     {
         if (Input.GetMouseButtonDown(0) && !_isDead) _attackController.Attack();
-        if (Input.GetMouseButtonDown(1) && !_isDead) _attackController.AlternativeAttack(); 
+        if (Input.GetMouseButtonDown(1) && !_isDead) _attackController.AlternativeAttack();
+        if (Input.GetKeyDown(KeyCode.Q) && !_isDead && _canApplySS)
+        {
+            ApplySS(false);
+            _attackController.SuperStrike();
+        } 
     }
 
 
@@ -103,7 +114,7 @@ public class PlayerController : MonoBehaviour, IMortal
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _jumpForce = StaticData.PlayerRole.MaxJumpForce;
+            _jumpForce = _gameManager.CurrentRole.MaxJumpForce;
             _animator.SetTrigger("Jump");
             Invoke("ReturnDirectionY", 1f);
         }
@@ -115,7 +126,7 @@ public class PlayerController : MonoBehaviour, IMortal
     public void Dying()
     {
         _isDead = true;
-        OnPlayerDying?.Invoke();
+        StaticData.OnPlayerDying?.Invoke();
     }
 
 

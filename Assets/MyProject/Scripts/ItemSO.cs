@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,9 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item", menuName = "Config/Item", order = 0)]
 
-
 public class ItemSO : ScriptableObject
 {
+    [field: SerializeField] public int ID { get; private set; }
     [field: SerializeField] public string Tytle { get; private set; }
     [field: SerializeField] public ItemAssignment Assignment { get; private set; }
     [field: SerializeField] public ItemType Type { get; private set; }

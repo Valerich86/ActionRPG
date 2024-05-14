@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ArrawController : MonoBehaviour
 {
+    [SerializeField] private ArrowType _type;
+
     private Rigidbody _rigidbody;
     private float _damage = 15;
     private Transform _parent;
@@ -25,11 +27,12 @@ public class ArrawController : MonoBehaviour
             hpController.TakeDamage(_damage);
         }
         else transform.parent = collision.transform;
+        if (_type == ArrowType.EnemyArrow) Destroy(gameObject, 5f);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && _type == ArrowType.PlayerArrow)
         {
             Destroy(gameObject);
             StaticData.OnArrowAmountChanged?.Invoke(1);

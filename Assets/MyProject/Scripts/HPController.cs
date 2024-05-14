@@ -18,13 +18,17 @@ public class HPController : MonoBehaviour
     private DefenseType _defenseType;
     private bool _inBlock;
     private bool _hasHelmet = false;
+    private bool _isInvulnerable = false;
     private void Start() => _animator = gameObject.GetComponent<Animator>();
 
-    public void SetStartHealth(float startHealth)
+    public void SetStartHealth(float current, float max)
     {
-        _maxhp = startHealth;
-        CurrentHP = _maxhp;
+        _maxhp = max;
+        CurrentHP = current;
     }
+
+    public void ChangeMaxHP(float factor) => _maxhp += factor;   
+
     public void SetHelmet() => _hasHelmet = true;
 
     public void SetDefenseType(DefenseType defType) => _defenseType = defType;
@@ -48,7 +52,7 @@ public class HPController : MonoBehaviour
         }
         else if (TryGetComponent<PlayerController>(out PlayerController player))
         {
-            if (_inBlock) return;
+            if (_inBlock || _isInvulnerable) return;
             if (_hasHelmet) damage -= damage * 0.3f;
         }
         SetDamage(damage);
@@ -79,7 +83,7 @@ public class HPController : MonoBehaviour
             _animator.SetTrigger("GetHit");
         }
     }
-
+    public void SetInvulnerability(bool value) => _isInvulnerable = value;
     public void SetBlock()
     {
         _animator.SetBool("Blocking", true);
@@ -94,6 +98,7 @@ public class HPController : MonoBehaviour
 
     public void Healing(int healPercent)
     {
+        if (CurrentHP == MaxHP) return;
         CurrentHP += MaxHP * healPercent / 100;
         if(CurrentHP > MaxHP) CurrentHP = MaxHP;
         OnHealthChanged?.Invoke(this);
